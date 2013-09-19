@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+	<link rel="shortcut icon" href="img/favico.png">
+	<link rel="icon" type="image/png" href="img/favico.png">
+	<meta http-equiv="cache-control" content="no-cache">
+	<title>CollectorSolutions, Inc. - Tax Collector, Utility & Municipality Payment Processor</title>
+	<link href="styles/normalize.css" type="text/css" rel="stylesheet" />
+	<link href='http://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+	<link href="styles/styles.css" type="text/css" rel="stylesheet" />
+	<link rel='stylesheet' media='screen and (max-width: 480px), screen and (max-device-width: 480px)' href='styles/small_styles.css' />
+	<meta name="viewport" content="width=device-width">
+	<!--[if lte IE 9]>
+		<script src="scripts/js/lib/html5shiv.js"></script>
+		<script src="scripts/js/styleTransitionFallback.js" defer></script>
+	<![endif]-->
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB9XKZuWBB3nTGBNs8wHgbQYFEHMEIeaVs&sensor=true"></script>
+	<script>
+	function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(30.408265, -87.215073),
+          zoom: 15,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+		var image = 'img/moneyman_googlemaps.png';
+		var marker = new google.maps.Marker({
+			icon: image,
+			position: new google.maps.LatLng(30.408265, -87.215073),
+			map: map,
+			title: "CollectorSolutions, Inc."
+		});
+      }
+    </script>
+</head>
+<body onload="initialize()">
+	<div id="container">
+		<header>
+		<a id="homeLink" href="index.html"><img src="img/csi_header_logo_alt.png" /></a>
+		<div id="quickContact">
+			<h2>Sales: 877-813-0199</h2>
+			<h3>Support: 866-756-6041</h2>
+		</div>
+		<nav class="textLinks">
+			<a href="index.html">Home</a>
+			<a class="active" href="about.html">About CSI</a>
+			<a href="solutions.html">Solutions</a>
+			<a href="pricing.html">Pricing</a>
+			<a href="partners.html">Partners</a>
+			<a href="support.html">Support</a>
+			<a href="contactus.html">Contact Us</a>
+		</nav>
+		<nav class="iconLinks">
+			<a href="index.html"><img src="img/menuicons/home.png" alt="Home" /></a>
+			<a class="active" href="about.html"><img src="img/menuicons/about.png" alt="About" /></a>
+			<a href="solutions.html"><img src="img/menuicons/solutions.png" alt="Solutions" /></a>
+			<a href="pricing.html"><img src="img/menuicons/pricing.png" alt="Pricing" /></a>
+			<a href="partners.html"><img src="img/menuicons/partners.png" alt="Partners" /></a>
+			<a href="support.html"><img src="img/menuicons/support.png" alt="Support" /></a>
+			<a href="contactus.html"><img src="img/menuicons/contact.png" alt="Contact" /></a>
+		</nav>
+		<div id="headerWatermark"></div>
+		</header>
+		<div id="sliderContainer">
+			<div class="sliderContainerWordWrapper">
+				<h1>"...exceptionally simple... exceptionally cost effective... <b>exceptionally supported</b>."</h1>
+			</div>		
+		</div>
+		<div class="aboutContainer">
+			<h2>About CSI</h2>
+			<p>In the last 20 years, society has been profoundly reshaped as a result of the creation and	 adoption of the World Wide Web.</p>
+			<p>Countless industries have arisen leveraging the convenience, flexibility, and pervasiveness of the Internet and its technologies.  One such industry is that of online web-payments; eCommerce as it were.</p>
+			<p>CollectorSolutions Incorporated (CSI) is one such company born of the eCommerce revolution.  Founded in 1999, CSI specializes in the processing, management and reconciliation of check and credit card payments executed via web technologies.  CSI’s singular mission is to provide our clients with a correct, stable and integrated solution that is uniquely simple, efficient and cost effective.</p>
+			<p>With a client base consisting of hundreds of government agencies, tax collectors, municipalities, and utilities throughout more than 35 states, CSI has developed an unrivalled understanding of the demands and complexities of ‘eGovernment’ payment processing solutions.  It is this understanding that enables the CSI team to excel at customer support and service; far surpassing the accepted industry norms and expectations.</p>
+			<p>CSI would like to offer to you our utmost gratitude for your consideration of our team as a provider of your payment processing solutions.  We look forward to the opportunity to demonstrate to you that in choosing CSI, you will ensure your organization and your customers of an exceptional solution that is exceptionally simple… exceptionally cost effective… exceptionally supported.</p>
+			<p>Sincerely,</p>
+			<p class="sig">Robert Cothran</p>
+			<p>President & Senior Software Architect</p>
+			
+		</div>
+		
+		<div class="aboutContainer">
+			<h2>CSI is a proud supporter of the following organizations:</h2>
+			<div class="imgHolder">
+			<img src="img/affiliates/ESPACE.JPG" />
+			<img src="img/affiliates/ymca.gif" />
+			<img src="img/affiliates/bgceclogo.gif" />
+			<img src="img/affiliates/makeawish.jpg" />
+			<img src="img/affiliates/pensacolachamber.png" />
+			<img src="img/affiliates/kiwanis.png" />
+			</div>
+		</div>
+	</div>
+		<footer>
+			<div id="footerContainer">
+				<div id="navFooter">
+				<h2>Navigation</h2>
+				<hr style="float: left; margin-bottom: 5px;" width="200px">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="about.html">About CSI</a></li>
+						<li><a href="solutions.html">Solutions</a></li>
+						<li><a href="pricing.html">Pricing</a></li>
+						<li><a href="partners.html">Partners</a></li>
+						<li><a href="support.html">Support</a></li>
+						<li><a href="contactus.html">Contact Us</a></li>
+					</ul>
+				</div>
+				<div>
+				<h2>Contact</h2><hr style="float: left; margin-bottom: 8px;" width="200px">
+					<ul>
+					<li><a href="mailto:help@collectorsolutions.com">Support</a></li>
+					<li><a href="mailto:sales@collectorsolutions.com">Sales</a></li>
+					</ul>
+					<p class="phone">
+					(877) 813-0199
+					</p>
+				</div>
+				<div id="contact_info">
+					<h2>Location</h2><hr style="float: left;" width="200px">
+					<div style="width:200px;height:300px;" id="map_canvas"></div>
+				</div>
+				<div id="about_info">
+					<h2>CSI Security</h2><hr style="float: left;" width="200px">
+					<img src="img/verisign_logo_small.png" /><br />
+					<a target="_blank" href="#"><img src="img/pci_stamp_small.png" /></a><br />
+					<table width="110" border="0" cellpadding="1" cellspacing="1"><tr><td width="110" align="center"><script src="https://sealserver.trustkeeper.net/compliance/seal_js.php?code=w6oj3BWiehnnQRKfEWTRO3XmX2IWgo&style=normal&size=105x54&language=en"></script><noscript><a href="https://sealserver.trustkeeper.net/compliance/cert.php?code=w6oj3BWiehnnQRKfEWTRO3XmX2IWgo&style=normal&size=105x54&language=en" target="hATW"><img src="https://sealserver.trustkeeper.net/compliance/seal.php?code=w6oj3BWiehnnQRKfEWTRO3XmX2IWgo&style=normal&size=105x54&language=en" border="0" alt="Trusted Commerce"/></a></noscript></td></tr></table></p>
+				</div>
+			</div>
+	</footer>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="scripts/js/my.js"></script>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-17097674-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+</body>
+</html>

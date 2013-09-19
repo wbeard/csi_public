@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+	<link rel="shortcut icon" href="img/favico.png">
+	<link rel="icon" type="image/png" href="img/favico.png">
+	<meta http-equiv="cache-control" content="no-cache">
+	<title>CollectorSolutions, Inc. - Tax Collector, Utility & Municipality Payment Processor</title>
+	<link href="styles/normalize.css" type="text/css" rel="stylesheet" />
+	<link href='http://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+	<link href="styles/styles.css" type="text/css" rel="stylesheet" />
+	<link rel='stylesheet' media='screen and (max-width: 480px), screen and (max-device-width: 480px)' href='styles/small_styles.css' />
+	<meta name="viewport" content="width=device-width">
+	<!--[if lte IE 9]>
+		<script src="scripts/js/lib/html5shiv.js"></script>
+		<script src="scripts/js/styleTransitionFallback.js" defer></script>
+	<![endif]-->
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB9XKZuWBB3nTGBNs8wHgbQYFEHMEIeaVs&sensor=true"></script>
+	<script>
+	function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(30.408265, -87.215073),
+          zoom: 15,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+		var image = 'img/moneyman_googlemaps.png';
+		var marker = new google.maps.Marker({
+			icon: image,
+			position: new google.maps.LatLng(30.408265, -87.215073),
+			map: map,
+			title: "CollectorSolutions, Inc."
+		});
+      }
+    </script>
+</head>
+<body onload="initialize()">
+	<div id="container">
+		<header>
+		<a id="homeLink" href="index.html"><img src="img/csi_header_logo_alt.png" /></a>
+		<div id="quickContact">
+			<h2>Sales: 877-813-0199</h2>
+			<h3>Support: 866-756-6041</h2>
+		</div>
+		<nav class="textLinks">
+			<a href="index.html">Home</a>
+			<a href="about.html">About CSI</a>
+			<a href="solutions.html">Solutions</a>
+			<a href="pricing.html">Pricing</a>
+			<a class="active" href="partners.html">Partners</a>
+			<a href="support.html">Support</a>
+			<a href="contactus.html">Contact Us</a>
+		</nav>
+		<nav class="iconLinks">
+			<a href="index.html"><img src="img/menuicons/home.png" alt="Home" /></a>
+			<a href="about.html"><img src="img/menuicons/about.png" alt="About" /></a>
+			<a href="solutions.html"><img src="img/menuicons/solutions.png" alt="Solutions" /></a>
+			<a href="pricing.html"><img src="img/menuicons/pricing.png" alt="Pricing" /></a>
+			<a class="active" href="partners.html"><img src="img/menuicons/partners.png" alt="Partners" /></a>
+			<a href="support.html"><img src="img/menuicons/support.png" alt="Support" /></a>
+			<a href="contactus.html"><img src="img/menuicons/contact.png" alt="Contact" /></a>
+		</nav>
+		<div id="headerWatermark"></div>
+		</header>
+		<div id="sliderContainer">
+			<div class="sliderContainerWordWrapper">
+				<h1>"...performance, synergy, team effort,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>exceptional results</b>..."</h1>
+			</div>
+			<div class="aboutContainer">
+				<h2>CSI Partners</h2>
+				<div id="partnerLinkContainer">
+					<a title="Fifth Third Bank offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/fifththird.png" /></a>
+					<a title="Advanced Utility Systems offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/advanced.png" /></a>
+					<a title="DataWest offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/datawest.png" /></a>
+					<a title="Hurdman Communications offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/hurdmancomm.png" /></a>
+					<a title="Harris Systems offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/harris.png" /></a>
+					<a title="Inhance Utility Solutions offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/inhance.png" /></a>
+					<a title="IP Commerce offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/ipcommerce.png" /></a>		
+					<a title="Northstar Utility Solutions offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/northstar.png" /></a>
+					<a title="System Innovators offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/system_innovators.png" /></a>
+					<a title="Thomson Reuters offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/thomsonreuters.png" /></a>
+					<a title="Transaction Warehouse offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/transactionwarehouse.png" /></a>
+					<a title="Vantiv offers value-added services to our software suite..." rel="tooltip" class="partnerLink" href="#"><img src="img/partners/vantiv.png" /></a>							
+				</div>
+			</div>
+		</div>
+	</div>
+		<footer>
+			<div id="footerContainer">
+				<div id="navFooter">
+				<h2>Navigation</h2>
+				<hr style="float: left; margin-bottom: 5px;" width="200px">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="about.html">About CSI</a></li>
+						<li><a href="solutions.html">Solutions</a></li>
+						<li><a href="pricing.html">Pricing</a></li>
+						<li><a href="partners.html">Partners</a></li>
+						<li><a href="support.html">Support</a></li>
+						<li><a href="contactus.html">Contact Us</a></li>
+					</ul>
+				</div>
+				<div>
+				<h2>Contact</h2><hr style="float: left; margin-bottom: 8px;" width="200px">
+					<ul>
+					<li><a href="mailto:help@collectorsolutions.com">Support</a></li>
+					<li><a href="mailto:sales@collectorsolutions.com">Sales</a></li>
+					</ul>
+					<p class="phone">
+					(877) 813-0199
+					</p>
+				</div>
+				<div id="contact_info">
+					<h2>Location</h2><hr style="float: left;" width="200px">
+					<div style="width:200px;height:300px;" id="map_canvas"></div>
+				</div>
+			<div id="about_info">
+					<h2>CSI Security</h2><hr style="float: left;" width="200px">
+					<img src="img/verisign_logo_small.png" /><br />
+					<a target="_blank" href="#"><img src="img/pci_stamp_small.png" /></a><br />
+					<table width="110" border="0" cellpadding="1" cellspacing="1"><tr><td width="110" align="center"><script src="https://sealserver.trustkeeper.net/compliance/seal_js.php?code=w6oj3BWiehnnQRKfEWTRO3XmX2IWgo&style=normal&size=105x54&language=en"></script><noscript><a href="https://sealserver.trustkeeper.net/compliance/cert.php?code=w6oj3BWiehnnQRKfEWTRO3XmX2IWgo&style=normal&size=105x54&language=en" target="hATW"><img src="https://sealserver.trustkeeper.net/compliance/seal.php?code=w6oj3BWiehnnQRKfEWTRO3XmX2IWgo&style=normal&size=105x54&language=en" border="0" alt="Trusted Commerce"/></a></noscript></td></tr></table></p>
+				</div>
+			</div>
+	</footer>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="scripts/js/my.js"></script>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-17097674-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+</body>
+</html>

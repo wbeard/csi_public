@@ -1,0 +1,285 @@
+<!doctype html>
+<html>
+<head>
+	<link rel="shortcut icon" href="img/favico.png">
+	<link rel="icon" type="image/png" href="img/favico.png">
+	<meta http-equiv="cache-control" content="no-cache">
+	<title>CSI, POS (Point of Sale) Solutions for Tax Assessor-Collectors</title>
+	<link href="styles/normalize.css" type="text/css" rel="stylesheet" />
+	<link href='http://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+	<link href="styles/styles.css" type="text/css" rel="stylesheet" />
+	<link rel='stylesheet' media='screen and (max-width: 480px), screen and (max-device-width: 480px)' href='styles/small_styles.css' />
+	<link rel='stylesheet' media='screen and (max-width: 1300px), screen and (max-device-width: 1300px)' href='styles/sideNav_adjust.css' />
+	<meta name="viewport" content="width=device-width">
+	<!--[if lte IE 9]>
+		<script src="scripts/js/lib/html5shiv.js"></script>
+		<script src="scripts/js/styleTransitionFallback.js" defer></script>
+	<![endif]-->
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB9XKZuWBB3nTGBNs8wHgbQYFEHMEIeaVs&sensor=true"></script>
+	<script>
+	function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(30.408265, -87.215073),
+          zoom: 15,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+		var image = 'img/moneyman_googlemaps.png';
+		var marker = new google.maps.Marker({
+			icon: image,
+			position: new google.maps.LatLng(30.408265, -87.215073),
+			map: map,
+			title: "CollectorSolutions, Inc."
+		});
+      }
+    </script>
+</head>
+<body onload="initialize()">
+	<!--<div id="joinYourTeam">
+		<div class="restore">
+		</div>
+		<div class="forminteraction">
+			<h4>Want a White Paper?</h4>
+			<p>Yes!</p><p>No Thanks</p>
+			<form id="emailInfo">
+				<p>Provide us your email</p>
+				<input name="custEmail" type="email" placeholder="Ex: your@email.com" id="joinYourTeamEmail"></input>
+				<input type="submit" id="joinYourTeamSubmit" value="Send"></input>
+			</form>
+		</div>
+	</div>-->
+	<div id="announcement">
+		<img src="img/nextmorning.png" />
+	</div>
+	<div id="container">
+		<header>
+		<a id="homeLink" href="index.html"><img src="img/csi_header_logo_alt.png" /></a>
+		<div id="quickContact">
+			<h2>Sales: 877-813-0199</h2>
+			<h3>Support: 866-756-6041</h2>
+		</div>
+		<nav class="textLinks">
+			<a href="index.html">Home</a>
+			<a href="about.html">About CSI</a>
+			<a href="solutions.html">Solutions</a>
+			<a href="pricing.html">Pricing</a>
+			<a href="partners.html">Partners</a>
+			<a href="support.html">Support</a>
+			<a href="contactus.html">Contact Us</a>
+		</nav>
+		<nav class="iconLinks">
+			<a href="index.html"><img src="img/menuicons/home.png" alt="Home" /></a>
+			<a href="about.html"><img src="img/menuicons/about.png" alt="About" /></a>
+			<a href="solutions.html"><img src="img/menuicons/solutions.png" alt="Solutions" /></a>
+			<a class="active" href="pricing.html"><img src="img/menuicons/pricing.png" alt="Pricing" /></a>
+			<a href="partners.html"><img src="img/menuicons/partners.png" alt="Partners" /></a>
+			<a href="support.html"><img src="img/menuicons/support.png" alt="Support" /></a>
+			<a href="contactus.html"><img src="img/menuicons/contact.png" alt="Contact" /></a>
+		</nav>
+		<div id="headerWatermark"></div>
+		</header>
+		<ul id="sideNav">
+			<li><a href="#overview">Overview</a></li>
+			<li><a href="#vt">Virtual Terminal</a></li>
+			<li><a href="#partners">Valued Partner</a></li>
+			<li><a href="#training">Training</a></li>
+			<li><a href="#questions">More Questions?</a></li>
+		</ul>
+		<div id="sliderContainer">
+			<a name="overview"></a>
+			<div class="sliderContainerWordWrapper posHeader">
+				<h1>"CSI's Point Of Sale Solution for<br /> DMV & Tax Payments...<br /><b> Simple, Efficient & Cost Effective</b>."</h1>
+			</div>
+			<div class="newDiv">
+				<div class="fullSide">
+				 <ul>
+					<li>Virtual terminal integration
+						<ul>
+							<li>Providing an efficient end-to-end payment processing solution</li>
+						</ul>
+					</li>
+					<li>E2EE POS Technology 
+						<ul>
+							<li>Protecting the client from the threat of entry-level data compromise while limiting the client’s PCI responsibility</li>
+						</ul>
+					</li>
+					<li>CSI Hosted and managed solution 
+						<ul>
+							<li>Requires no local client deployment or local client maintenance</li>
+						</ul>
+					</li>
+					<li>Same day settlement of POS funds
+						<ul>
+							<li>Funds are available in the client DDA the next morning</li>
+						</ul>
+					</li>
+					<li>Integrated into a single overall payment management solution 
+						<ul>
+							<li>Web, POS, IVR & Recurring</li>
+						</ul>
+					</li>
+				 </ul>
+				</div>
+			</div>
+			<article class="quoteContainer">
+				<p class="quote">Thank you for your commitment to the excellence that I expect and your professionalism.</p>
+				<p class="sig">-Sylvia S. Romo, Bexar County Texas Tax Assessor-Collector</p>
+				<div class="face">
+					<img src="img/sylviaromo.png" />
+				</div>
+			</article>
+			<a name="vt"></a>
+			<blockquote><b>Virtual Terminal Integration</b><br/>with ACT Web & Thomson Reuters<br/></blockquote>
+			<div class="newDiv">
+				<div data-hoverText="Click to see full diagram"  class="leftSide hover">
+					<a target="_blank" href="resources/vt_diagram.pdf"><img src="img/vt_diagram_clip.png"alt="Virtual Terminal Diagram" /></a>
+				</div>
+				<div class="side">
+				<h1>Virtual Terminal Integration</h1>
+				<p>The CSI Virtual Terminal (VT) Solution simplifies the task of processing customer credit cards by reducing the amount of steps required to take a payment.  The CSI VT solution allows the POS tax clerk to process a payment via a CSI QuickPay button embedded within the ACT Web or Thomson Reuters interface.  The transaction is then completed without exiting the program.</p>
+				<p>Learn more - please click the thumbnail to the left to see a full, technical diagram of CSI's Virtual Terminal.</p>
+				</div>
+			</div>
+			<article class="quoteContainer">
+				<p class="quote">If you have any thoughts of changing your online and point of sale payment vendor, do yourself a favor and contact CollectorSolutions.</p>
+				<p class="sig">-Cory A. Godwin, Chief Deputy Tax Collector, Walton County Tax Collector's Office, FL</p>
+				<div class="face">
+					<img src="img/corygodwin.png" />
+				</div>
+			</article>
+			<a name="partners"></a>
+			<blockquote>CSI is not just another vendor... <br /><b> But a valued partner with your team</b></blockquote>
+			<div class="newDiv sliderContainerWordWrapper posSecondary">
+				<h1><span>Respect</span><b>We believe your time and commitment to the public, as well as your business, deserves recognition and respect.</b></h1>
+				<h1><span>Success</span><b>We believe our success is contingent upon your success.</b></h1>
+				<h1><span>Care</span><b>We believe in demonstrating personalized care for you, our customer partner, at every level.</b></h1>
+				<h1><span>Knowledge</span><b>We believe in keeping you informed and knowledgeable on the latest best practices, standards and technology in the ePayments processing industry.</b></h1>
+				<h1><span>Customers</span><b>We believe in providing your customers with a superior experience and a variety of simple to use payment channels, including: Point of Sale, Web and IVR.</b></h1>
+			</div>
+			<article class="quoteContainer">
+				<p class="quote">We have no greater friend in our efforts to provide the highest quality of service to our customers than CSI.  From the initial set-up of our payment systems to ensuring our day to day work processes are operating smoothly, the team at CSI remains by our side.</p>
+				<p class="sig">-Rhonda Skipper, Walton County Florida Tax Collector</p>
+				<div class="face">
+					<img src="img/rhondaskipper.png" />
+				</div>
+			</article>
+			<a name="training"></a>
+			<blockquote>Customer Partner Education is key... <br /><b>And with CSI, it's part of the package.</b></blockquote>
+			<div class="youtube newDiv">
+				<iframe style="float: left;" width="480" height="260px" src="http://www.youtube.com/embed/WaCqUBU5RFw" frameborder="0" allowfullscreen></iframe>
+				<div class="side">
+					<h1>Bexar County's Training</h1>
+					<p>On top of our on-site implementation and training of CSI's POS and Web solutions, we created a custom training video for Bexar County to get future employees up to speed.</p>
+					<p class="cta">Find out how we can train and educate you and your fellow employees.</p>
+					<p class="cta">Call me, Victor Cross, at <a href="+18778130199">877-813-0199</a>.</p>
+					<p class="cta">Or email me at <a href="mailto:victorc@collectorsolutions.com">victorc@collectorsolutions.com</a>.</p>
+				</div>
+			</div>
+			<article class="quoteContainer faceless">
+				<p class="quote">...They (CSI) clearly established themselves as an expert in this area very quickly. CSI has been very good to the City of Pensacola and they have a dependable, fast, courteous, and innovative staff of employees that support their product.</p>
+				<p class="sig">-Dena Faessel, Administrative Assistant, City of Pensacola, FL</p>
+			</article>
+			<div class="newDiv" id="more">
+			<a name="questions"></a>
+				<blockquote>Have more questions?</blockquote>
+				<p class="cta main">Call me, Victor Cross, at <a href="+18778130199">877-813-0199</a>.</p>
+				<p class="cta">Or email me at <a href="mailto:victorc@collectorsolutions.com">victorc@collectorsolutions.com</a>.</p>
+				<p class="cta">Find out more about our solutions by visiting <a target="_blank" href="solutions.html">Solutions</a></p>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<div id="footerContainer">
+			<div id="navFooter">
+			<h2>Navigation</h2>
+			<hr style="float: left; margin-bottom: 5px;" width="200px">
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="about.html">About CSI</a></li>
+					<li><a href="solutions.html">Solutions</a></li>
+					<li><a href="pricing.html">Pricing</a></li>
+					<li><a href="partners.html">Partners</a></li>
+					<li><a href="support.html">Support</a></li>
+					<li><a href="contactus.html">Contact Us</a></li>
+				</ul>
+			</div>
+			<div>
+			<h2>Contact</h2><hr style="float: left; margin-bottom: 8px;" width="200px">
+				<ul>
+				<li><a href="mailto:help@collectorsolutions.com">Support</a></li>
+				<li><a href="mailto:sales@collectorsolutions.com">Sales</a></li>
+				</ul>
+				<p class="phone">
+				(877) 813-0199
+				</p>
+			</div>
+			<div id="contact_info">
+				<h2>Location</h2><hr style="float: left;" width="200px">
+				<div style="width:200px;height:300px;" id="map_canvas"></div>
+			</div>
+			<div id="about_info">
+					<h2>CSI Security</h2><hr style="float: left;" width="200px">
+					<img src="img/verisign_logo_small.png" /><br />
+					<a target="_blank" href="#"><img src="img/pci_stamp_small.png" /></a><br />
+					<table width="110" border="0" cellpadding="1" cellspacing="1"><tr><td width="110" align="center"><script src="https://sealserver.trustkeeper.net/compliance/seal_js.php?code=w6oj3BWiehnnQRKfEWTRO3XmX2IWgo&style=normal&size=105x54&language=en"></script><noscript><a href="https://sealserver.trustkeeper.net/compliance/cert.php?code=w6oj3BWiehnnQRKfEWTRO3XmX2IWgo&style=normal&size=105x54&language=en" target="hATW"><img src="https://sealserver.trustkeeper.net/compliance/seal.php?code=w6oj3BWiehnnQRKfEWTRO3XmX2IWgo&style=normal&size=105x54&language=en" border="0" alt="Trusted Commerce"/></a></noscript></td></tr></table></p>
+				</div>
+		</div>
+	</footer>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="scripts/js/my.js"></script>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-17097674-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+	<script>
+	$(document).ready(function() {
+		$("#joinYourTeam").on("click", function(evt) {
+			if($(evt.target).text() === "Yes!") {
+				$("#emailInfo").show();
+				$("#joinYourTeam > .forminteraction > h4").text("Tell us where to send it");
+				$("#joinYourTeam > .forminteraction > p").remove();
+			}
+			else if ($(evt.target).text() === "No Thanks") {
+				$("#joinYourTeam").animate({
+					right: "-=" + ($("#joinYourTeam").outerWidth() - 20)
+				}, 500, function() {
+					$("#joinYourTeam > .restore").show();
+				});
+			}
+			else if ($(evt.target).is("div.restore")) {
+				$("#joinYourTeam > .restore").hide();
+				$("#joinYourTeam").animate({
+					right: "+=" + ($("#joinYourTeam").outerWidth() - 20)
+				}, 500);
+			}
+		});
+		$("#emailInfo").submit(function(evt) {
+			evt.preventDefault();
+			console.log($("#emailInfo").serialize());
+			$.ajax({
+				url: "email.php",
+				type: "POST",
+				contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+				data: $("#emailInfo").serialize(),
+				success: function(evt) {
+					$("#joinYourTeam").fadeOut();
+				},
+				error: function(evt) {
+					$("#joinYourTeamEmail").css("box-shadow", "0 0 3px red");
+				}
+			});
+		});
+	});
+	</script>
+</body>
+</html>

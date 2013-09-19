@@ -1,0 +1,3767 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<link rel="shortcut icon" href="img/favico.png">
+	<link rel="icon" type="image/png" href="img/favico.png">
+	<meta http-equiv="cache-control" content="no-cache">
+	<title>CSI eCollections Portal API</title>
+	<link href="styles/normalize.css" type="text/css" rel="stylesheet" />
+	<link href='http://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+	
+	<link href="styles/bootstrap.min.css" type="text/css" rel="stylesheet" />
+	<link href="styles/bootstrap-responsive.min.css" type="text/css" rel="stylesheet" />
+	<link href="styles/styles_api.css" type="text/css" rel="stylesheet" />
+	<link rel='stylesheet' media='screen and (max-width: 480px), screen and (max-device-width: 480px)' href='styles/small_styles.css' />
+	<link rel='stylesheet' media='screen and (max-width: 1300px), screen and (max-device-width: 1300px)' href='styles/sideNav_adjust.css' />
+	<link href="styles/prettify.css" type="text/css" rel="stylesheet" />
+	<meta name="viewport" content="width=device-width">
+	<!--[if lte IE 9]>
+		<script src="scripts/js/lib/html5shiv.js"></script>
+		<script src="scripts/js/styleTransitionFallback.js" defer></script>
+	<![endif]-->
+</head>
+<body onload="prettyPrint()">
+	<div id="container">
+		<header>
+			<div id="logo">
+				<a href="#"><img alt="Collector Solutions Logo" src="http://collectorsolutions.com/img/csi_Header_Logo_Watermark_alt.png" /></a>
+			</div>
+			<h1>CSI Portal Specification</h1>
+			<p>Last Updated 12/05/2012</p>
+			<ul rel="navigation" id="topNav" class="nav bottom nav-pills">
+				<li class="active"><a data-toggle="pill" href="#overview">Overview</a></li>
+				<li><a id="referenceTab" data-toggle="pill" href="#reference">Reference</a></li>
+			</ul>
+		</header>
+		<div id="tabContainer" class="tab-content">
+			<div class="tab-pane active" id="overview">
+				<article id="intro">
+					<h1><a name="intro">Introduction</a></h1>
+					<section>
+						<p>The CSI eCollections Portal provides our clients with the capability to process both eCheck (ACH) and Credit Card transactions utilizing any store-front technology (e.g. eCommerce Web-Site, POS software, IVR, Kiosk Software) capable of interacting with .Net Web-Services.</p>
+						<p><b>Web Reference URLs:</b></p>
+						<a target="_blank" href="https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.asmx"><code>https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.asmx</code></a>
+						<a target="_blank" href="https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.asmx?WSDL"><code>https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.asmx?WSDL</code></a>
+						<br /><br />
+						<p><span class="label label-important">Java Developers:</span></p>
+						<p><b>Use this WSDL below when consuming the web service</b></p>
+						<a target="_blank" href="https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.wsdl"><code>https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.wsdl</code></a>
+						<br /><br />
+						<p>For those developers who are not using .NET and/or who are not familiar with the XML object required for standard method calls, many methods may be accessed via a ‘NonNet’ wrapper method.  For example, you may make a call to the calculate fee method via the calculateFee method or the calculateFee_nonNET method.</p>
+						<p>When the call is made to the nonNet wrapper, the xml should be submitted as a string rather than an XML object.  Furthermore, the response will be an xml string rather than an XML object (in compliance with the below specification).</p>
+						<p><span class="label label-warning">NOTE:</span> All node names ARE case sensitive.</p>
+						<h2>Sample integration code:</h2>
+						<p>For the following code to be functional, you must first create a ‘Web Reference’ using the above URL.  In the example below, the ‘Web Reference’ was named wsCSI_eCollections_Portal.</p>
+						<ul id="introCode" class="nav nav-tabs">
+							<li class="active" data-language="vb"><a data-toggle="tab" href="#introCodeVb">VB.Net</a></li>
+							<li data-language="c#"><a data-toggle="tab" href="#introCodeCSharp">C#.Net</a></li>
+							<li data-language="java"><a data-toggle="tab" href="#introCodeJava">Java</a></li>
+							<li data-language="php"><a data-toggle="tab" href="#introCodePhp">PHP</a></li>
+						</ul>
+						<div id="introCodeContent" class="tab-content">
+							<div class="tab-pane active" id="introCodeVb">
+								<pre class="prettyprint linenums lang-vb">
+'Here is some VB.Net sample code used after importing and/or consuming the WSDL in your preferred way. We used Visual Studio's Web Reference Wizard to add the web service.
+Dim ws As new wsCSI_eCollections_Portal.ProcessingGateway 'The web service
+Dim objXMLDocument_ProcessPayment As New MSXML2.DOMDocument40 'The XML obj to load your xml string
+Dim objXMLDocument_ProcessPayment_XMLConvert As New System.xml.XmlDocument 'The XML obj to convert your XML doc to a XML object
+Dim objXMLDocument_ProcessPayment_Response As New MSXML2.DOMDocument40 'The XML obj to hold the XML obj response
+Dim xmlProcessPayment As String 'Concatenated String holding the submitted info
+Dim strProcessPayment_PRC As String 'String holding the prc in the XML response
+Dim strProcessPayment_ResponseCode As String 'String holding the response code in the XML response
+
+xmlProcessPayment = "XML String created via desired technique"
+objXMLDocument_ProcessPayment.loadXML(xmlProcessPayment) 'Load up an XML Doc
+objXMLDocument_ProcessPayment_XMLconvert.LoadXml(objXMLDocument_ProcessPayment.xml) 'Convert to XML obj
+objXMLDocument_ProcessPayment_Response.loadXML(ws.processTransaction(objXMLDocument_ProcessPayment_XMLconvert.OuterXml))'This is creating an XML object out of the XML submitted
+
+strProcessPayment_PRC = Trim(objXMLDocument_ProcessPayment_Response.documentElement.selectSingleNode("PRC").text) 'Get text out of the PRC node
+strProcessPayment_ResponseCode = Trim(objXMLDocument_ProcessPayment_Response.documentElement.selectSingleNode("RESPONSECODE").text)'Get text out of the RESPONSECODE node</pre>
+							</div>
+							<div class="tab-pane" id="introCodeCSharp">
+							<pre class="prettyprint linenums pre-scrollable">
+//Here is some C#.Net sample code used after importing and/or consuming the WSDL in your preferred way. We used Visual Studio's Web Reference Wizard to add the web service.'
+wsCSI_eCollections_Portal.ProcessingGateway ws = new wsCSI_eCollections_Portal.ProcessingGateway(); //The web service
+MSXML2.DOMDocument40 objXMLDocument_ProcessPayment = new MSXML2.DOMDocument40(); //The XML obj to load your xml string
+System.Xml.XmlDocument objXMLDocument_ProcessPayment_XMLConvert = new System.Xml.XmlDocument(); //The XML obj to convert your XML doc to a XML object
+MSXML2.DOMDocument40 objXMLDocument_ProcessPayment_Response = new MSXML2.DOMDocument40(); //The XML obj to hold the XML obj response
+string xmlProcessPayment = null; //Concatenated String holding the submitted info
+string strProcessPayment_PRC = null; //String holding the prc in the XML response
+string strProcessPayment_ResponseCode = null; //String holding the response code in the XML response
+
+xmlProcessPayment = "XML String created via desired technique";
+objXMLDocument_ProcessPayment.loadXML(xmlProcessPayment); //Load up an XML Doc
+objXMLDocument_ProcessPayment_XMLConvert.LoadXml(objXMLDocument_ProcessPayment.xml); //Convert to XML obj
+objXMLDocument_ProcessPayment_Response.loadXML(ws.processTransaction(objXMLDocument_ProcessPayment_XMLConvert.OuterXml)); //This is creating an XML object out of the XML submitted
+
+strProcessPayment_PRC = Strings.Trim(objXMLDocument_ProcessPayment_Response.documentElement.selectSingleNode("PRC").text); //Get text out of the PRC node
+strProcessPayment_ResponseCode = Strings.Trim(objXMLDocument_ProcessPayment_Response.documentElement.selectSingleNode("RESPONSECODE").text) //Get text out of the RESPONSECODE node
+							</pre>
+							</div>
+						<div class="tab-pane" id="introCodeJava">
+							<pre class="prettyprint linenums pre-scrollable">
+//Here is some Java sample code used after importing and/or consuming the WSDL in some form or fashion. We used NetBeans Web Service Import Wizard to add the web service.
+public static void main(String[] args) throws SAXException, ParserConfigurationException, IOException { 
+	String strSendXML = "[The XML String to send]"; //The string to hold the xml which will be sent
+	String strResponseXML = new String(); //The string to hold the response from the server
+	String strResponseText = new String(); //The string to hold the responsecode node text
+	String strFeeAmountText = new String(); //The string to hold the feeamount node text
+	Document xmlConvert; //The xml object to parse the string into
+	
+	strResponseXML = calculatefeeNonNET(strSendXML); //Pass the xml string to the calculateFeeNonNET() method
+	xmlConvert = stringToXml(strResponseXML); //Pass the response to our stringToXml() helper method
+	//Parse the document. Techniques vary. We do it this way for clarity.
+	Node responseTextNode = xmlConvert.getElementsByTagName("RESPONSECODE").item(0); //Get the separate nodes, such as the RESPONSECODE
+	Node feeAmountTextNode = xmlConvert.getElementsByTagName("FEEAMOUNT").item(0); //Declare and assign values
+	strResponseText = responseTextNode.getTextContent(); //Get text content of the RESPONSECODE node
+	strFeeAmountText = feeAmountTextNode.getTextContent(); //Get text content of the FEEAMOUNT node
+}
+//Code generated by netbeans (Right-click in document, choose "Insert Code", then choose "Call Web Service Operation", then choose the appropriate method under Processing Gateway
+private static String calculatefeeNonNET(String strXMLFee) {
+	https.secure_collectorsolutions_com.csi_ecollections_portal.processinggateway.ProcessingGateway service = new https.secure_collectorsolutions_com.csi_ecollections_portal.processinggateway.ProcessingGateway();
+	https.secure_collectorsolutions_com.csi_ecollections_portal.processinggateway.ProcessingGatewaySoap port = service.getProcessingGatewaySoap();
+	return port.calculatefeeNonNET(strXMLFee);
+}
+//Helper function to convert string to xml doc
+private static Document stringToXml(String strConvert) throws SAXException, ParserConfigurationException, IOException { 
+		DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
+		Reader reader = new CharArrayReader(strConvert.toCharArray());
+		Document returnDoc = docBuilder.parse(new InputSource(reader));            
+		return returnDoc;
+}</pre>
+						</div>
+						<div class="tab-pane" id="introCodePhp">
+							<pre class="prettyprint linenums pre-scrollable">
+//Here is some PHP sample code used after importing and/or consuming the WSDL in some form or fashion. No framework or IDE was used to import the web service.
+//We tested this using a XAMPP server with PHP 5.4.3
+//We're using the default SoapClient() available in php. Uncomment extension=php_openssl.dll and extension=php_soap.dll in your php.ini for this to work.
+$soap_client = new SoapClient('https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.asmx?WSDL'); //Load up the web service WSDL
+$strXmlStringRequest = '[XML string to send to the server]'; //XML string to send to server
+$strXmlStringResponse = $soap_client->calculatefee_NonNET(array('strXML' => $strXmlStringRequest)); //Response from the server.
+
+//The string is in the calculatefee_nonNETResult property of the class created. We have it printing the string into the new SimpleXMLElement constructor to make our xml doc.
+$xml = new SimpleXMLElement(print_r($strXmlStringResponse->calculatefee_nonNETResult, 1)); //PHP was casting this into a stdObj.
+
+//SimpleXMLElement can access xml child nodes like object properties
+$responseCode = $xml->RESPONSECODE; //Get the RESPONSECODE node text
+$fee = $xml->FEEAMOUNT;//Get the FEEAMONT node text
+							</pre>
+						</div>
+							<div class="copyContainer" style="position: relative">
+								<span class="copy" id="copySampleCode">Copy to Clipboard</span>
+							</div>
+					</div>
+					</section>
+					<section>
+						<h1>What Now?</h1>
+						<p>Soon we will be adding code samples from different languages to help get you up to speed.</p>
+						<p>For now, check out the Reference section for more detailed info on all of our methods.</p>
+						<button id="triggerReference" type="button" class="btn btn-primary btn-large">Go to reference <i class="icon-hand-right icon-white"></i></button>
+					</section>
+				</article>
+			</div>
+		<div class="tab-pane" id="reference">
+		<ul id="sideNav">
+			<li><a href="#fee">Calculate Fee</a><i></i>
+				<ul>
+					<li>
+						<a href="#feemethods">Methods</a>
+					</li>
+					<li>
+						<a href="#feesub">XML Submission</a>
+					</li>
+					<li>
+						<a href="#feeres">XML Response</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#transaction">Process Transaction</a><i></i>
+				<ul>
+					<li>
+						<a href="#processtransactionmethods">Methods</a>
+					</li>
+					<li>
+						<a href="#processtransactioncredit">XML Submission - Credit Cards</a>
+					</li>
+					<li>
+						<a href="#processtransactioncheck">XML Submission - eChecks</a>
+					</li>
+					<li>
+						<a href="#processtransactionres">XML Response</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#vt">Virtual Terminal Transaction</a><i></i>
+				<ul>
+					<li>
+						<a href="#vtmethods">Methods</a>
+					</li>
+					<li>
+						<a href="#vtpost">VT Post Submission</a>
+					</li>
+					<li>
+						<a href="#vtpost2">VT Post Response</a>
+					</li>
+					<li>
+						<a href="#vtredirect">Redirect URL</a>
+					</li>
+					<li>
+						<a href="#vtget">VT Get Submission</a>
+					</li>
+					<li>
+						<a href="#vtget2">VT Get Response</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#manatron">Manatron Transaction</a><i></i>
+				<ul>
+					<li>
+						<a href="#manatronmethods">Methods</a>
+					</li>
+					<li>
+						<a href="#manatronpost">Manatron Post Submission</a>
+					</li>
+					<li>
+						<a href="#manatronpost2">Manatron Post Response</a>
+					</li>
+					<li>
+						<a href="#manatronredirect">Redirect URL</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#tokenization">Tokenization</a><i></i>
+				<ul>
+					<li>
+						<a href="#tokenizationmethods">Methods</a>
+					</li>
+					<li>
+						<a href="#tokenizationcreate">XML Submission - eChecks</a>
+					</li>
+					<li>
+						<a href="#tokenizationcreate2">XML Submission - Credit Cards</a>
+					</li>
+					<li>
+						<a href="#tokenizationcreate3">XML Response - Create Token</a>
+					</li>
+					<li>
+						<a href="#tokenizationprocess">XML Submission - Process Token</a>
+					</li>
+					<li>
+						<a href="#tokenizationcreate3">XML Response - Process Token</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#void">Voids\Credits</a><i></i>
+				<ul>
+					<li>
+						<a href="#void-methods">Methods</a>
+					</li>
+					<li>
+						<a href="#void-submit">XML Submission</a>
+					</li>
+					<li>
+						<a href="#void-response">XML Response</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#export-detailed-trans">Export Detailed Transactions</a><i></i>
+				<ul>
+					<li>
+						<a href="#export-detailed-trans-methods">Methods</a>
+					</li>
+					<li>
+						<a href="#export-detailed-trans-submit">XML Submission</a>
+					</li>
+					<li>
+						<a href="#export-detailed-trans-submit2">XML Submission – Update</a>
+					</li>
+					<li>
+						<a href="#export-detailed-trans-response">XML Response</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#export-check-credits">Export Check Credits</a><i></i>
+				<ul>
+					<li>
+						<a href="#export-check-credits-methods">Methods</a>
+					</li>
+					<li>
+						<a href="#export-check-credits-submit">XML Submission</a>
+					</li>
+					<li>
+						<a href="#export-check-credits-response">XML Response</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#export-check-returns">Export Check Returns</a><i></i>
+				<ul>
+					<li>
+						<a href="#export-check-returns-methods">Methods</a>
+					</li>
+					<li>
+						<a href="#export-check-returns-submit">XML Submission</a>
+					</li>
+					<li>
+						<a href="#export-check-returns-response">XML Response</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#export-credit-card-credits">Export Credit Card Credits</a><i></i>
+				<ul>
+					<li>
+						<a href="#export-credit-card-credits-methods">Methods</a>
+					</li>
+					<li>
+						<a href="#export-credit-card-credits-submit">XML Submission</a>
+					</li>
+					<li>
+						<a href="#export-credit-card-credits-response">XML Response</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#export-credit-card-fee-structure">Export Credit Card Fee Structure</a><i></i>
+				<ul>
+					<li>
+						<a href="#export-credit-card-fee-structure-methods">Methods</a>
+					</li>
+					<li>
+						<a href="#export-credit-card-fee-structure-submit">XML Submission</a>
+					</li>
+					<li>
+						<a href="#export-credit-card-fee-structure-response">DataSet Response</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#verify-transaction">Verify Transaction</a><i></i>
+				<ul>
+					<li>
+						<a href="#verify-transaction-methods">Methods</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#verify-payment-id">Verify Payment ID</a><i></i>
+				<ul>
+					<li>
+						<a href="#verify-payment-id-methods">Methods</a>
+					</li>
+					<li>
+						<a href="#verify-payment-id-submit">XML Submission</a>
+					</li>
+					<li>
+						<a href="#verify-payment-id-response">XML Response</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#test-values">Test Values</a><i></i>
+				<ul>
+					<li>
+						<a href="#test-values-credit-card">Credit Card</a>
+					</li>
+					<li>
+						<a href="#test-values-check">Check</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#test-connectivity">Test Connectivity</a><i></i>
+				<ul>
+					<li>
+						<a href="#test-connectivity-methods">Methods</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#invalid-chars">Invalid XML Characters</a></li>
+			<li><a href="#methods">Methods</a></li>
+			<li><a href="#response-codes">Response Codes</a></li>
+			<li><a href="#changes">Changes</a></li>
+		</ul>
+		<div id="contentContainer">
+			<article id="fee">
+				<h1><a name="fee">Calculate Fee</a></h1>
+				<section>
+					<h2><a name="feemethods">Methods</a></h2>
+					<code rel="tooltip" title="The calculateFee method calculates and returns the fee that CSI will apply to a particular transaction.">calculateFee</code><br />
+					<code rel="tooltip" title="The calculateFee_nonNET method calculates and returns the fee that CSI will apply to a particular transaction… the method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.">calculateFee_nonNET</code><br />
+					<code rel="tooltip" title="The calculateFee_nonNET_XMLObjectResponse method calculates and returns the fee that CSI will apply to a particular transaction… the method is provided for those developers who are not using .NET and/or who wish to pass in an XML argument as a string, but, wish to have the response return as an System.xml.XMLDocument object.">calculateFee_nonNet_XMLObjectResponse</code><br />
+					<p>For those clients passing the processing fees to their customers, the fee to be charged for a transaction MUST be plainly and clearly revealed to a customer BEFORE they are allowed to submit the item for processing.</p>
+				</section>
+				<section>
+					<h2><a name="feesub">XML Submission</a></h2>
+					<p>The child node ‘LINEITEM’ may be repeated 1 to n times in order to support multiple payments in one transaction.</p>
+					<pre class="prettyprint linenums">
+&lt;FEE&gt;	
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;PAYMENTMETHOD&gt;&lt;/PAYMENTMETHOD&gt;      
+	&lt;CARDTYPE&gt;&lt;/CARDTYPE&gt;      
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+	&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+	&lt;LINEITEM&gt;
+	&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+	&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+	&lt;/LINEITEM&gt;	
+&lt;/FEE&gt;</pre>
+					<p><span class="red">*</span>This field is only required for a Fee request of PAYMENTMETHOD ‘0’</p>
+					<p>Items in <span class="red">red</span> are optional (with exception to the above defined rules)</p>
+					<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>PAYMENTMETHOD</td>
+						<td>0, 1</td>
+						<td>
+							0 for Credit Card <br />
+							1 for Check
+						</td>
+					</tr>
+					<tr>
+						<td>CARDTYPE</td>
+						<td>3, 4, 5, 6</td>
+						<td>
+						3 for AMEX<br />
+						4 for VISA<br />
+						5 for MasterCard<br />
+						6 for Discovery
+						</td>
+					</tr>
+					<tr>
+						<td>COLLECTIONMODE</td>
+						<td>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</td>
+						<td>
+						1 for Web<br />
+						2 for POS (manual)<br />
+						3 for POS (scanned)<br />
+						4 for Tel<br />
+						5 for IVR<br />
+						6 for Email<br />
+						7 for Pre-Authorization<br />
+						8 for Web (other)<br />
+						9 for Mailroom-Dropbox (manual)<br />
+						10 for Mailroom-Dropbox (scanned)
+						</td>
+					</tr>
+					<tr>
+						<td>AMOUNT</td>
+						<td></td>
+						<td>Currency <= 999,999.99</td>
+					</tr>
+					<tr>
+						<td>CUSTOMERPAYMENTTYPEID</td>
+						<td></td>
+						<td>Alpha-numeric string value <= 32 generated by client and used for the purpose of a join between the CSI portal and the client’s MIS and/or CIS systems</td>
+					</tr>
+					<tr>
+						<td>ITEMAMOUNT</td>
+						<td></td>
+						<td>Currency <= 999,999.99</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="feeres">XML Response</a></h2>
+					<pre class="prettyprint linenums">
+&lt;FEE&gt;	
+	&lt;FEEAMOUNT&gt;&lt;/FEEAMOUNT&gt;
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;      	
+&lt;/FEE&gt;</pre>
+					<p>The FEEAMOUNT node will be a currency value <= 999,999.99.  If an error occurred, this value will be set to -1.00.</p>
+				</section>
+			</article>
+			<article id="transaction">
+				<h1><a name="transaction">Process Transaction</a></h1>
+				<section>
+					<h2><a name="processtransactionmethods">Methods</a></h2>
+					<code rel="tooltip" title="The processTransaction method provides a gateway through which CSI clients may process electronic check and credit card transactions.">processTransaction</code><br />
+					<code rel="tooltip" title="The processTransaction_nonNET method provides a gateway through which CSI clients may process electronic check and credit card transactions… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.">processTransaction_nonNET</code><br />
+					<code rel="tooltip" title="The processTransaction_nonNET_XMLObjectResponse method provides a gateway through which CSI clients may process electronic check and credit card transactions… this method is provided for those developers who are not using .NET and/or who wish to pass in an XML argument as a string, but, wish to have the response return as an System.xml.XMLDocument object.">processTransaction_nonNet_XMLObjectResponse</code><br />
+				</section>
+				<section>
+					<h2><a name="processtransactioncredit">XML Submission - Credit Cards</a></h2>
+					<p>The child node ‘LINEITEM’ may be repeated 1 to n times in order to support multiple payments in one transaction.</p>
+					<p><b>Un-encrypted</b></p>
+				<pre class="prettyprint linenums pre-scrollable">
+&lt;TRANSACTION&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;PAYMENTMETHOD&gt;&lt;/PAYMENTMETHOD&gt;
+	&lt;AUTHFORCE&gt;&lt;/AUTHFORCE&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+	&lt;PRC&gt;&lt;/PRC&gt;*				
+	&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+	&lt;FEEAMOUNT&gt;&lt;/FEEAMOUNT&gt;
+	&lt;ALLOWDUPLICATE&gt;&lt;/ALLOWDUPLICATE&gt;
+	&lt;NAME&gt;&lt;/NAME&gt;
+	&lt;ADDRESS&gt;&lt;/ADDRESS&gt;**
+	&lt;ADDRESSTWO&gt;&lt;/ADDRESSTWO&gt;
+	&lt;CITY&gt;&lt;/CITY&gt;**
+	&lt;COUNTY&gt;&lt;/COUNTY&gt;
+	&lt;STATE&gt;&lt;/STATE&gt;**
+	&lt;ZIP&gt;&lt;/ZIP&gt;**
+	&lt;COUNTRY&gt;&lt;/COUNTRY&gt;**
+	&lt;EMAIL&gt;&lt;/EMAIL&gt;
+	&lt;PHONE&gt;&lt;/PHONE&gt;
+	&lt;SHIPPINGNAME&gt;&lt;/SHIPPINGNAME&gt;***
+	&lt;SHIPPINGADDRESS&gt;&lt;/SHIPPINGADDRESS&gt;***
+	&lt;SHIPPINGADDRESSTWO&gt;&lt;/SHIPPINGADDRESSTWO&gt;
+	&lt;SHIPPINGCITY&gt;&lt;/SHIPPINGCITY&gt;***
+	&lt;SHIPPINGSTATE&gt;&lt;/SHIPPINGSTATE&gt;***
+	&lt;SHIPPINGZIP&gt;&lt;/SHIPPINGZIP&gt;***
+	&lt;SHIPPINGCOUNTRY&gt;&lt;/SHIPPINGCOUNTRY&gt;***
+	&lt;SHIPPINGEMAIL&gt;&lt;/SHIPPINGEMAIL&gt;
+	&lt;SHIPPINGPHONE&gt;&lt;/SHIPPINGPHONE&gt;***
+	&lt;CVV2&gt;&lt;/CVV2&gt;*****
+	&lt;CCNUMBER&gt;&lt;/CCNUMBER&gt;
+	&lt;EXPDATE&gt;&lt;/EXPDATE&gt;
+	&lt;NOTES&gt;&lt;/NOTES&gt;
+	&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;****
+	&lt;CSIPAYERID&gt;&lt;/CSIPAYERID&gt;
+	&lt;CSIUSERID&gt;&lt;/CSIUSERID&gt;
+	&lt;LINEITEM&gt;
+		&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+		&lt;PAYMENTID_SECONDARY&gt;&lt;/PAYMENTID_SECONDARY&gt;
+		&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+		&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+		&lt;MISC_ONE&gt;&lt;/MISC_ONE&gt;
+		&lt;MISC_TWO&gt;&lt;/MISC_TWO&gt;
+		&lt;MISC_THREE&gt;&lt;/MISC_THREE&gt;
+		&lt;MISC_FOUR&gt;&lt;/MISC_FOUR&gt;
+		&lt;MISC_FIVE&gt;&lt;/MISC_FIVE&gt;
+		&lt;MISC_SIX&gt;&lt;/MISC_SIX&gt;
+		&lt;MISC_SEVEN&gt;&lt;/MISC_SEVEN&gt;
+		&lt;MISC_EIGHT&gt;&lt;/MISC_EIGHT&gt;
+		&lt;MISC_NINE&gt;&lt;/MISC_NINE&gt;
+		&lt;MISC_TEN&gt;&lt;/MISC_TEN&gt;
+		&lt;MISC_ELEVEN&gt;&lt;/MISC_ELEVEN&gt;
+		&lt;MISC_TWELVE&gt;&lt;/MISC_TWELVE&gt;
+		&lt;MISC_THIRTEEN&gt;&lt;/MISC_THIRTEEN&gt;
+		&lt;MISC_FOURTEEN&gt;&lt;/MISC_FOURTEEN&gt;
+		&lt;MISC_FIFTEEN&gt;&lt;/MISC_FIFTEEN&gt;
+	&lt;/LINEITEM&gt;
+&lt;/TRANSACTION&gt;
+				</pre>
+					<p><b>Encrypted</b></p>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;TRANSACTION&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;PAYMENTMETHOD&gt;&lt;/PAYMENTMETHOD&gt;
+	&lt;AUTHFORCE&gt;&lt;/AUTHFORCE&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+	&lt;PRC&gt;&lt;/PRC&gt;*				
+	&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+	&lt;FEEAMOUNT&gt;&lt;/FEEAMOUNT&gt;
+	&lt;ALLOWDUPLICATE&gt;&lt;/ALLOWDUPLICATE&gt;
+	&lt;NAME&gt;&lt;/NAME&gt;
+	&lt;ADDRESS&gt;&lt;/ADDRESS&gt;**
+	&lt;ADDRESSTWO&gt;&lt;/ADDRESSTWO&gt;
+	&lt;CITY&gt;&lt;/CITY&gt;**
+	&lt;COUNTY&gt;&lt;/COUNTY&gt;
+	&lt;STATE&gt;&lt;/STATE&gt;**
+	&lt;ZIP&gt;&lt;/ZIP&gt;**
+	&lt;COUNTRY&gt;&lt;/COUNTRY&gt;**
+	&lt;EMAIL&gt;&lt;/EMAIL&gt;
+	&lt;PHONE&gt;&lt;/PHONE&gt;
+	&lt;SHIPPINGNAME&gt;&lt;/SHIPPINGNAME&gt;***
+	&lt;SHIPPINGADDRESS&gt;&lt;/SHIPPINGADDRESS&gt;***
+	&lt;SHIPPINGADDRESSTWO&gt;&lt;/SHIPPINGADDRESSTWO&gt;
+	&lt;SHIPPINGCITY&gt;&lt;/SHIPPINGCITY&gt;***
+	&lt;SHIPPINGSTATE&gt;&lt;/SHIPPINGSTATE&gt;***
+	&lt;SHIPPINGZIP&gt;&lt;/SHIPPINGZIP&gt;***
+	&lt;SHIPPINGCOUNTRY&gt;&lt;/SHIPPINGCOUNTRY&gt;***
+	&lt;SHIPPINGEMAIL&gt;&lt;/SHIPPINGEMAIL&gt;
+	&lt;SHIPPINGPHONE&gt;&lt;/SHIPPINGPHONE&gt;***
+	&lt;CCNUMBERMASKED&gt;&lt;/CCNUMBERMASKED&gt;
+	&lt;EXPDATE&gt;&lt;/EXPDATE&gt;
+	&lt;TRACK2&gt;&lt;/TRACK2&gt;
+	&lt;DUKPT&gt;&lt;/DUKPT&gt;
+	&lt;MPSTATUS&gt;&lt;/MPSTATUS&gt;
+	&lt;MPDATA&gt;&lt;/MPDATA&gt;
+	&lt;NOTES&gt;&lt;/NOTES&gt;
+	&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;****
+	&lt;CSIPAYERID&gt;&lt;/CSIPAYERID&gt;
+	&lt;CSIUSERID&gt;&lt;/CSIUSERID&gt;
+	&lt;LINEITEM&gt;
+		&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+		&lt;PAYMENTID_SECONDARY&gt;&lt;/PAYMENTID_SECONDARY&gt;
+		&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+		&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+		&lt;MISC_ONE&gt;&lt;/MISC_ONE&gt;
+		&lt;MISC_TWO&gt;&lt;/MISC_TWO&gt;
+		&lt;MISC_THREE&gt;&lt;/MISC_THREE&gt;
+		&lt;MISC_FOUR&gt;&lt;/MISC_FOUR&gt;
+		&lt;MISC_FIVE&gt;&lt;/MISC_FIVE&gt;
+		&lt;MISC_SIX&gt;&lt;/MISC_SIX&gt;
+		&lt;MISC_SEVEN&gt;&lt;/MISC_SEVEN&gt;
+		&lt;MISC_EIGHT&gt;&lt;/MISC_EIGHT&gt;
+		&lt;MISC_NINE&gt;&lt;/MISC_NINE&gt;
+		&lt;MISC_TEN&gt;&lt;/MISC_TEN&gt;
+		&lt;MISC_ELEVEN&gt;&lt;/MISC_ELEVEN&gt;
+		&lt;MISC_TWELVE&gt;&lt;/MISC_TWELVE&gt;
+		&lt;MISC_THIRTEEN&gt;&lt;/MISC_THIRTEEN&gt;
+		&lt;MISC_FOURTEEN&gt;&lt;/MISC_FOURTEEN&gt;
+		&lt;MISC_FIFTEEN&gt;&lt;/MISC_FIFTEEN&gt;
+	&lt;/LINEITEM&gt;
+&lt;/TRANSACTION&gt;</pre>
+				<p>* This field is only required for a force transaction</p>
+				<p>** For AVS fraud protection or general Billing Information persistence  these fields would be required</p>
+				<p>*** For Shipping Information persistence, these fields must be provided</p>
+				<p>**** This field is for backwards compatibility only.  The value will be overwritten by the CSI value organizationUnitId_ProcessPayment from the User (CSIUSERID value) profile</p>
+				<p>***** This field is required for all collection modes excluding 3, 7, 9</p>
+				<p>Items in <span class="red">red</span> are optional (with exception to the above defined rules)</p>
+				<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>TRANSACTIONID</td>
+						<td></td>
+						<td>1 to 32 character alpha-numeric string generated by client</td>
+					</tr>
+					<tr>
+						<td>PAYMENTMETHOD</td>
+						<td>0, 1</td>
+						<td>
+							0 for Credit Card <br />
+							1 for Check
+						</td>
+					</tr>
+					<tr>
+						<td>AUTHFORCE</td>
+						<td>0, 1, 2</td>
+						<td>
+							0 for authorize ONLY <br />
+							1 for force ONLY <br />
+							2 for authorize/force <br />
+						</td>
+					</tr>
+					<tr>
+						<td>COLLECTIONMODE</td>
+						<td>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</td>
+						<td>
+						1 for Web<br />
+						2 for POS (manual)<br />
+						3 for POS (scanned)<br />
+						4 for Tel<br />
+						5 for IVR<br />
+						6 for Email<br />
+						7 for Pre-Authorization<br />
+						8 for Web (other)<br />
+						9 for Mailroom-Dropbox (manual)<br />
+						10 for Mailroom-Dropbox (scanned)
+						</td>
+					</tr>
+					<tr>
+						<td>PRC</td>
+						<td></td>
+						<td>Numeric string consisting of 8 digits… must be same as PRC of ‘authorize’ transaction</td>
+					</tr>
+					<tr>
+						<td>AMOUNT</td>
+						<td></td>
+						<td>Currency <= 999,999.99</td>
+					</tr>
+					<tr>
+						<td>FEEAMOUNT</td>
+						<td></td>
+						<td>Currency <= 999,999.99</td>
+					</tr>
+					<tr>
+						<td>ALLOWDUPLICATE</td>
+						<td>1, 2</td>
+						<td>
+							1 for No<br />
+							2 for Yes<br /><br />
+							Will over-ride CSI settings to allow for ‘one-time’ duplicate exceptions to be controlled by client submission
+						</td>
+					</tr>
+					<tr>
+						<td>NAME</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ADDRESS</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ADDRESSTWO</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>CITY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>COUNTY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>STATE</td>
+						<td>This should be the full State name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>ZIP</td>
+						<td></td>
+						<td>Alpha-numeric string of length <= 20</td>
+					</tr>
+					<tr>
+						<td>COUNTRY</td>
+						<td>This should be the full Country name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>EMAIL</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>PHONE</td>
+						<td></td>
+						<td>Numeric string of length = 10</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGNAME</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGADDRESS</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGADDRESSTWO</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGCITY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGSTATE</td>
+						<td>This should be the full State name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGZIP</td>
+						<td></td>
+						<td>Alpha-numeric string of length <= 20</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGCOUNTRY</td>
+						<td>This should be the full Country name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGEMAIL</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGPHONE</td>
+						<td></td>
+						<td>Numeric string of length = 10</td>
+					</tr>
+					<tr>
+						<td>CVV2</td>
+						<td></td>
+						<td>Numeric string consisting of 3 or 4 digits</td>
+					</tr>
+					<tr>
+						<td>CCNUMBER</td>
+						<td></td>
+						<td>Numeric string consisting of 13 to 16 digits</td>
+					</tr>
+					<tr>
+						<td>EXPDATE</td>
+						<td></td>
+						<td>Numeric string in format MMYY</td>
+					</tr>
+					<tr>
+						<td>NOTES</td>
+						<td></td>
+						<td>String of length <=255</td>
+					</tr>
+					<tr>
+						<td>CSIORGANIZATIONUNITID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Organizational Unit creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CSIPAYERID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Payer creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CSIUSERID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the User creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>PAYMENTID</td>
+						<td></td>
+						<td>Alpha-numeric string <=100 generated by client</td>
+					</tr>
+					<tr>
+						<td>PAYMENTID_SECONDARY</td>
+						<td></td>
+						<td>Alpha-numeric string <=100 generated by client</td>
+					</tr>
+					<tr>
+						<td>CUSTOMERPAYMENTTYPEID</td>
+						<td></td>
+						<td>Alpha-numeric string value <= 32 generated by client and used for the purpose of a join between the CSI portal and the client’s MIS and/or CIS systems</td>
+					</tr>
+					<tr>
+						<td>ITEMAMOUNT</td>
+						<td></td>
+						<td>Currency <= 999,999.99</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="processtransactioncheck">XML Submission - eChecks</a></h2>
+					<p>The child node ‘LINEITEM’ may be repeated 1 to n times in order to support multiple payments in one transaction.</p>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;TRANSACTION&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;PAYMENTMETHOD&gt;&lt;/PAYMENTMETHOD&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+	&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+	&lt;FEEAMOUNT&gt;&lt;/FEEAMOUNT&gt;
+	&lt;ALLOWDUPLICATE&gt;&lt;/ALLOWDUPLICATE&gt;
+	&lt;NAME&gt;&lt;/NAME&gt;
+	&lt;ADDRESS&gt;&lt;/ADDRESS&gt;**
+	&lt;ADDRESSTWO&gt;&lt;/ADDRESSTWO&gt;
+	&lt;CITY&gt;&lt;/CITY&gt;**
+	&lt;COUNTY&gt;&lt;/COUNTY&gt;
+	&lt;STATE&gt;&lt;/STATE&gt;**
+	&lt;ZIP&gt;&lt;/ZIP&gt;**
+	&lt;EMAIL&gt;&lt;/EMAIL&gt;
+	&lt;PHONE&gt;&lt;/PHONE&gt;
+	&lt;SHIPPINGNAME&gt;&lt;/SHIPPINGNAME&gt;***
+	&lt;SHIPPINGADDRESS&gt;&lt;/SHIPPINGADDRESS&gt;***
+	&lt;SHIPPINGADDRESSTWO&gt;&lt;/SHIPPINGADDRESSTWO&gt;
+	&lt;SHIPPINGCITY&gt;&lt;/SHIPPINGCITY&gt;***
+	&lt;SHIPPINGSTATE&gt;&lt;/SHIPPINGSTATE&gt;***
+	&lt;SHIPPINGZIP&gt;&lt;/SHIPPINGZIP&gt;***
+	&lt;SHIPPINGCOUNTRY&gt;&lt;/SHIPPINGCOUNTRY&gt;***
+	&lt;SHIPPINGEMAIL&gt;&lt;/SHIPPINGEMAIL&gt;
+	&lt;SHIPPINGPHONE&gt;&lt;/SHIPPINGPHONE&gt;***
+	&lt;BANKNAME&gt;&lt;/BANKNAME&gt;
+	&lt;ACCOUNTTYPE&gt;&lt;/ACCOUNTTYPE&gt;
+	&lt;CHECKTYPE&gt;&lt;/CHECKTYPE&gt;
+	&lt;CHECKNUMBER&gt;&lt;/CHECKNUMBER&gt;****
+	&lt;ROUTINGNUMBER&gt;&lt;/ROUTINGNUMBER&gt;
+	&lt;ACCOUNTNUMBER&gt;&lt;/ACCOUNTNUMBER&gt;
+	&lt;CHECKIMAGENAME&gt;&lt;/CHECKIMAGENAME&gt;****
+	&lt;IAT&gt;&lt;/IAT&gt;
+	&lt;EFFECTIVEDATE&gt;&lt;/EFFECTIVEDATE&gt;
+	&lt;NOTES&gt;&lt;/NOTES&gt;
+	&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;***
+	&lt;CSIPAYERID&gt;&lt;/CSIPAYERID&gt;
+	&lt;CSIUSERID&gt;&lt;/CSIUSERID&gt;
+	&lt;LINEITEM&gt;
+		&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+		&lt;PAYMENTID_SECONDARY&gt;&lt;/PAYMENTID_SECONDARY&gt;
+		&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+		&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+		&lt;MISC_ONE&gt;&lt;/MISC_ONE&gt;
+		&lt;MISC_TWO&gt;&lt;/MISC_TWO&gt;
+		&lt;MISC_THREE&gt;&lt;/MISC_THREE&gt;
+		&lt;MISC_FOUR&gt;&lt;/MISC_FOUR&gt;
+		&lt;MISC_FIVE&gt;&lt;/MISC_FIVE&gt;
+		&lt;MISC_SIX&gt;&lt;/MISC_SIX&gt;
+		&lt;MISC_SEVEN&gt;&lt;/MISC_SEVEN&gt;
+		&lt;MISC_EIGHT&gt;&lt;/MISC_EIGHT&gt;
+		&lt;MISC_NINE&gt;&lt;/MISC_NINE&gt;
+		&lt;MISC_TEN&gt;&lt;/MISC_TEN&gt;
+		&lt;MISC_ELEVEN&gt;&lt;/MISC_ELEVEN&gt;
+		&lt;MISC_TWELVE&gt;&lt;/MISC_TWELVE&gt;
+		&lt;MISC_THIRTEEN&gt;&lt;/MISC_THIRTEEN&gt;
+		&lt;MISC_FOURTEEN&gt;&lt;/MISC_FOURTEEN&gt;
+		&lt;MISC_FIFTEEN&gt;&lt;/MISC_FIFTEEN&gt;
+	&lt;/LINEITEM&gt;
+&lt;/TRANSACTION&gt;</pre>
+				<p>* This field is only required for a force transaction</p>
+				<p>** For AVS fraud protection or general Billing Information persistence  these fields would be required</p>
+				<p>*** For Shipping Information persistence, these fields must be provided</p>
+				<p>**** This field is for backwards compatibility only.  The value will be overwritten by the CSI value organizationUnitId_ProcessPayment from the User (CSIUSERID value) profile</p>
+				<p>***** This field is required for all collection modes excluding 3, 7, 9</p>
+				<p>Items in <span class="red">red</span> are optional (with exception to the above defined rules)</p>
+				<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>TRANSACTIONID</td>
+						<td></td>
+						<td>1 to 32 character alpha-numeric string generated by client</td>
+					</tr>
+					<tr>
+						<td>PAYMENTMETHOD</td>
+						<td>0, 1</td>
+						<td>
+							0 for Credit Card <br />
+							1 for Check
+						</td>
+					</tr>
+					<tr>
+						<td>AUTHFORCE</td>
+						<td>0, 1, 2</td>
+						<td>
+							0 for authorize ONLY <br />
+							1 for force ONLY <br />
+							2 for authorize/force <br />
+						</td>
+					</tr>
+					<tr>
+						<td>COLLECTIONMODE</td>
+						<td>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</td>
+						<td>
+						1 for Web<br />
+						2 for POS (manual)<br />
+						3 for POS (scanned)<br />
+						4 for Tel<br />
+						5 for IVR<br />
+						6 for Email<br />
+						7 for Pre-Authorization<br />
+						8 for Web (other)<br />
+						9 for Mailroom-Dropbox (manual)<br />
+						10 for Mailroom-Dropbox (scanned)
+						</td>
+					</tr>
+					<tr>
+						<td>PRC</td>
+						<td></td>
+						<td>Numeric string consisting of 8 digits… must be same as PRC of ‘authorize’ transaction</td>
+					</tr>
+					<tr>
+						<td>AMOUNT</td>
+						<td></td>
+						<td>Currency <= 999,999.99</td>
+					</tr>
+					<tr>
+						<td>FEEAMOUNT</td>
+						<td></td>
+						<td>Currency <= 999,999.99</td>
+					</tr>
+					<tr>
+						<td>ALLOWDUPLICATE</td>
+						<td>1, 2</td>
+						<td>
+							1 for No<br />
+							2 for Yes<br /><br />
+							Will over-ride CSI settings to allow for ‘one-time’ duplicate exceptions to be controlled by client submission
+						</td>
+					</tr>
+					<tr>
+						<td>NAME</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ADDRESS</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ADDRESSTWO</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>CITY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>COUNTY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>STATE</td>
+						<td>This should be the full State name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>ZIP</td>
+						<td></td>
+						<td>Alpha-numeric string of length <= 20</td>
+					</tr>
+					<tr>
+						<td>COUNTRY</td>
+						<td>This should be the full Country name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>EMAIL</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>PHONE</td>
+						<td></td>
+						<td>Numeric string of length = 10</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGNAME</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGADDRESS</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGADDRESSTWO</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGCITY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGSTATE</td>
+						<td>This should be the full State name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGZIP</td>
+						<td></td>
+						<td>Alpha-numeric string of length <= 20</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGCOUNTRY</td>
+						<td>This should be the full Country name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGEMAIL</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>SHIPPINGPHONE</td>
+						<td></td>
+						<td>Numeric string of length = 10</td>
+					</tr>
+					<tr>
+						<td>BANKNAME</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ACCOUNTTYPE</td>
+						<td>1, 2</td>
+						<td>
+							1 for Checking<br /> 
+							2 for Savings<br />	
+						</td>
+					</tr>
+					<tr>
+						<td>CHECKTYPE</td>
+						<td>1, 2</td>
+						<td>
+							1 for Business<br /> 
+							2 for Personal	
+						</td>
+					</tr>
+					<tr>
+						<td>CHECKNUMBER</td>
+						<td></td>
+						<td>Numeric string : last 15 digits of check number </td>
+					</tr>
+					<tr>
+						<td>ROUTINGNUMBER</td>
+						<td></td>
+						<td>Numeric string of length 9</td>
+					</tr>
+					<tr>
+						<td>ACCOUNTNUMBER</td>
+						<td></td>
+						<td>Numeric string of length <=17</td>
+					</tr>
+					<tr>
+						<td>CHECKIMAGENAME</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>IAT</td>
+						<td>1, 2</td>
+						<td>
+							1 for United States (Domestic)<br />
+							2 for International
+						</td>
+					</tr>
+					<tr>
+						<td>EFFECTIVEDATE</td>
+						<td></td>
+						<td>Date value formatted ‘mm/dd/yyyy’</td>
+					</tr>
+					<tr>
+						<td>NOTES</td>
+						<td></td>
+						<td>String of length <=255</td>
+					</tr>
+					<tr>
+						<td>CSIORGANIZATIONUNITID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Organizational Unit creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CSIPAYERID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Payer creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CSIUSERID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the User creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>PAYMENTID</td>
+						<td></td>
+						<td>Alpha-numeric string <=100 generated by client</td>
+					</tr>
+					<tr>
+						<td>PAYMENTID_SECONDARY</td>
+						<td></td>
+						<td>Alpha-numeric string <=100 generated by client</td>
+					</tr>
+					<tr>
+						<td>CUSTOMERPAYMENTTYPEID</td>
+						<td></td>
+						<td>Alpha-numeric string value <= 32 generated by client and used for the purpose of a join between the CSI portal and the client’s MIS and/or CIS systems</td>
+					</tr>
+					<tr>
+						<td>ITEMAMOUNT</td>
+						<td></td>
+						<td>Currency <= 999,999.99</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="processtransactionres">XML Response</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;TRANSACTION&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;PRC&gt;&lt;/PRC&gt;
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+&lt;/TRANSACTION&gt;</pre>
+					<p>The TRANSACTIONID value will be the same as the value passed to the CSI method by the client.   In the event that the XML submission could not be parsed (causing the error condition) the TRANSACTIONID value will be empty.</p>
+					<p>The PRC value will be a numeric string consisting of 8 digits that is unique to CollectorSolutions.  In the event that a submitted transaction fails prior to achieving a persistent state (e.g. during initial validation, etc), this value will be a sequence of zeros ‘00000000’.</p>
+				</section>
+			</article>
+			<article id="vt">
+				<h1><a name="vt">Virtual Terminal Transaction</a></h1>
+				<section>
+					<h2><a name="vtmethods">Methods</a></h2>
+					<code rel="tooltip" title="The VT_Transaction_POST method allows CSI clients to securely post transactional data that is to be used in a subsequent virtual terminal transaction request.">VT_Transaction_POST</code><br />
+					<code rel="tooltip" title="The VT_Transaction_GET method allows CSI clients to securely retrieve transactional data that is the result of a previous virtual terminal transaction request.">VT_Transaction_GET</code><br />
+					<p>VT transaction data will overload localized CSI User Security settings.  Thus, the CSIUSERID value will work with COLLECTIONMODE value and/or the PAYMENTID value passed in regardless of how the User is defined in the CSI system.</p>
+					<p>User security should be managed by the calling System.</p>
+				</section>
+				<section>
+					<h2><a name="vtpost">XML Submission - VT_TRANSACTION_POST</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;VT_TRANSACTION&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+	&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+	&lt;NAME&gt; &lt;/NAME&gt;
+	&lt;ADDRESS&gt;&lt;/ADDRESS&gt;
+	&lt;ADDRESSTWO&gt;&lt;/ADDRESSTWO&gt;
+	&lt;CITY&gt; &lt;/CITY&gt;
+	&lt;COUNTY&gt;&lt;/COUNTY&gt;
+	&lt;STATE&gt; &lt;/STATE&gt;
+	&lt;COUNTRY&gt;&lt;/COUNTRY&gt;
+	&lt;ZIP&gt;&lt;/ZIP&gt;
+	&lt;EMAIL&gt;&lt;/EMAIL&gt;
+	&lt;PHONE&gt;&lt;/PHONE&gt;
+	&lt;NOTES&gt; &lt;/NOTES&gt;
+	&lt;CSIUSERID&gt;&lt;/CSIUSERID&gt;
+	&lt;LINEITEM&gt;
+		&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+		&lt;PAYMENTID_SECONDARY&gt;&lt;/PAYMENTID_SECONDARY&gt;
+		&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+		&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+		&lt;MISC_ONE&gt;&lt;/MISC_ONE&gt;
+		&lt;MISC_TWO&gt;&lt;/MISC_TWO&gt;
+		&lt;MISC_THREE&gt;&lt;/MISC_THREE&gt;
+		&lt;MISC_FOUR&gt;&lt;/MISC_FOUR&gt;
+		&lt;MISC_FIVE&gt;&lt;/MISC_FIVE&gt;
+		&lt;MISC_SIX&gt;&lt;/MISC_SIX&gt;
+		&lt;MISC_SEVEN&gt;&lt;/MISC_SEVEN&gt;
+		&lt;MISC_EIGHT&gt;&lt;/MISC_EIGHT&gt;
+		&lt;MISC_NINE&gt;&lt;/MISC_NINE&gt;
+		&lt;MISC_TEN&gt;&lt;/MISC_TEN&gt;
+		&lt;MISC_ELEVEN&gt;&lt;/MISC_ELEVEN&gt;
+		&lt;MISC_TWELVE&gt;&lt;/MISC_TWELVE&gt;
+		&lt;MISC_THIRTEEN&gt;&lt;/MISC_THIRTEEN&gt;
+		&lt;MISC_FOURTEEN&gt;&lt;/MISC_FOURTEEN&gt;
+		&lt;MISC_FIFTEEN&gt;&lt;/MISC_FIFTEEN&gt;
+	&lt;/LINEITEM&gt;
+	&lt;URLSILENTPOST&gt; &lt;/URLSILENTPOST&gt;
+	&lt;URLRETURNPOST&gt; &lt;/URLRETURNPOST&gt;
+&lt;/VT_TRANSACTION&gt;</pre>
+				<p>Items in <span class="red">red</span> are optional</b>
+				<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>TRANSACTIONID</td>
+						<td></td>
+						<td>1 to 32 character alpha-numeric string generated by client</td>
+					</tr>
+					<tr>
+						<td>COLLECTIONMODE</td>
+						<td>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</td>
+						<td>
+						1 for Web<br />
+						2 for POS (manual)<br />
+						3 for POS (scanned)<br />
+						4 for Tel<br />
+						5 for IVR<br />
+						6 for Email<br />
+						7 for Pre-Authorization<br />
+						8 for Web (other)<br />
+						9 for Mailroom-Dropbox (manual)<br />
+						10 for Mailroom-Dropbox (scanned)
+						</td>
+					</tr>
+					<tr>
+						<td>AMOUNT</td>
+						<td></td>
+						<td>Currency <= 999,999.99</td>
+					</tr>
+					<tr>
+						<td>NAME</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ADDRESS</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ADDRESSTWO</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>CITY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>COUNTY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>STATE</td>
+						<td>This should be the full State name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>ZIP</td>
+						<td></td>
+						<td>Alpha-numeric string of length <= 20</td>
+					</tr>
+					<tr>
+						<td>COUNTRY</td>
+						<td>This should be the full Country name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>EMAIL</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>PHONE</td>
+						<td></td>
+						<td>Numeric string of length = 10</td>
+					</tr>
+					<tr>
+						<td>NOTES</td>
+						<td></td>
+						<td>String of length <=255</td>
+					</tr>
+					<tr>
+						<td>CSIORGANIZATIONUNITID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Organizational Unit creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CSIPAYERID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Payer creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CSIUSERID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the User creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>PAYMENTID</td>
+						<td></td>
+						<td>Alpha-numeric string <=100 generated by client</td>
+					</tr>
+					<tr>
+						<td>PAYMENTID_SECONDARY</td>
+						<td></td>
+						<td>Alpha-numeric string <=100 generated by client</td>
+					</tr>
+					<tr>
+						<td>CUSTOMERPAYMENTTYPEID</td>
+						<td></td>
+						<td>Alpha-numeric string value <= 32 generated by client and used for the purpose of a join between the CSI portal and the client’s MIS and/or CIS systems</td>
+					</tr>
+					<tr>
+						<td>ITEMAMOUNT</td>
+						<td></td>
+						<td>Currency <= 999,999.99</td>
+					</tr>
+					<tr>
+						<td>MISC_[NUMBER]</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="vtpost2">XML Response - VT_TRANSACTION_POST</a></h2>
+					<pre class="prettyprint linenums">
+&lt;VT_TRANSACTION&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+&lt;/VT_TRANSACTION&gt;</pre>
+					<p>The TRANSACTIONID value will be the same as the value passed to the method by the client.   In the event that the XML submission could not be parsed (causing the error condition) the TRANSACTIONID value will be empty.</p>
+				</section>
+				<section>
+					<h2><a name="vtredirect">Virtual Terminal Redirect</a></h2>
+					<code>https://secure.collectorsolutions.com/csi_ecollections_portal_ui/interchange.aspx?ciid=[value]&ste=5&transid=[value]</code><br />
+					<p>If a URLSILENTPOST value and/or a URLRETURNPOST value were provided in the VT Transaction Post XML submission, the name-value pairs returned to those URLs will be as follows:</p>
+					<code>URL?transid=[trans id value]&status=[status value]</code><br />
+					<p>The ‘transid’ value will be the same value as the TRANSACTIONID value provided in the VT Transaction Post XML submission.</p>
+					<p>Following are the possible ‘status’ values:</p>
+					<ul class="no-list-style">
+						<li><span class="badge badge-success">-1</span>General Error</li>
+						<li><span class="badge badge-warning">1</span>Cancelled Transaction</li>
+						<li><span class="badge badge-important">4</span>Declined Transaction</li>
+						<li><span class="badge badge-info">3</span>Approved Transaction</li>
+					</ul>
+				</section>
+				<section>
+					<h2><a name="vtget">XML Submission - VT_TRANSACTION_GET</a></h2>
+					<pre class="prettyprint linenums">
+&lt;VT_TRANSACTION&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+&lt;/VT_TRANSACTION&gt;</pre>
+					<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>TRANSACTIONID</td>
+						<td></td>
+						<td>1 to 32 character alpha-numeric string generated by client</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="vtget2">XML Response - VT_TRANSACTION_GET</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;VT_TRANSACTION&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;
+	&lt;RESPONSECODE&gt; &lt;/RESPONSECODE&gt;
+	&lt;APPROVALSTATUS&gt;&lt;/APPROVALSTATUS&gt;
+	&lt;PRC&gt;&lt;/PRC&gt;
+	&lt;EFFECTIVEDATE&gt;&lt;/EFFECTIVEDATE&gt;
+	&lt;NAME&gt; &lt;/NAME&gt;
+	&lt;ADDRESS&gt; &lt;/ADDRESS&gt;
+	&lt;ADDRESSTWO&gt;&lt;/ADDRESSTWO&gt;
+	&lt;CITY&gt;&lt;/CITY&gt;
+	&lt;COUNTY&gt;&lt;/COUNTY&gt;
+	&lt;STATE&gt;&lt;/STATE&gt;
+	&lt;ZIP&gt;&lt;/ZIP&gt;
+	&lt;COUNTRY&gt; &lt;/COUNTRY&gt;
+	&lt;PHONE&gt;&lt;/PHONE&gt;
+	&lt;EMAIL&gt;&lt;/EMAIL&gt;
+	&lt;NOTES&gt; &lt;/NOTES&gt;
+	&lt;PAYMENTMETHOD&gt;&lt;/PAYMENTMETHOD&gt;
+	&lt;CREDITCARDNUMBER&gt;&lt;/CREDITCARDNUMBER&gt;
+	&lt;CSIUSERID&gt;&lt;/CSIUSERID&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+	&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+	&lt;FEEAMOUNT&gt;&lt;/FEEAMOUNT&gt;
+	&lt;TOTALREMITTED&gt;&lt;/TOTALREMITTED&gt;
+	&lt;LINEITEM&gt;
+		&lt;NAME&gt; &lt;/NAME&gt;
+		&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+		&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+		&lt;PAYMENTIDSECONDARY&gt;&lt;/PAYMENTIDSECONDARY&gt;
+		&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+		&lt;MISC_ONE&gt;&lt;/MISC_ONE&gt;
+		&lt;MISC_TWO&gt;&lt;/MISC_TWO&gt;
+		&lt;MISC_THREE&gt;&lt;/MISC_THREE&gt;
+		&lt;MISC_FOUR&gt;&lt;/MISC_FOUR&gt;
+		&lt;MISC_FIVE&gt;&lt;/MISC_FIVE&gt;
+		&lt;MISC_SIX&gt;&lt;/MISC_SIX&gt;
+		&lt;MISC_SEVEN&gt;&lt;/MISC_SEVEN&gt;
+		&lt;MISC_EIGHT&gt;&lt;/MISC_EIGHT&gt;
+		&lt;MISC_NINE&gt;&lt;/MISC_NINE&gt;
+		&lt;MISC_TEN&gt;&lt;/MISC_TEN&gt;
+		&lt;MISC_ELEVEN&gt;&lt;/MISC_ELEVEN&gt;
+		&lt;MISC_TWELVE&gt;&lt;/MISC_TWELVE&gt;
+		&lt;MISC_THIRTEEN&gt;&lt;/MISC_THIRTEEN&gt;
+		&lt;MISC_FOURTEEN&gt;&lt;/MISC_FOURTEEN&gt;
+		&lt;MISC_FIFTEEN&gt;&lt;/MISC_FIFTEEN&gt;				
+	&lt;/LINEITEM&gt;
+&lt;/VT_TRANSACTION&gt;</pre>
+				<p>The TRANSACTIONID value will be the same as the value passed to the method by the client.   In the event that the XML submission could not be parsed (causing the error condition) the TRANSACTIONID value will be empty.</p>
+				<p>The COUNT value will be ‘1’.</p>
+				<p>If the TRANSACTIONID value is NOT located in the system, you will only receive the following response:</p>
+				<pre class="prettyprint linenums">
+&lt;VT_TRANSACTION&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;
+	&lt;RESPONSECODE&gt; &lt;/RESPONSECODE&gt;
+&lt;/VT_TRANSACTION&gt;</pre>
+				<p>The COUNT value will be ‘0’.</p>
+				<p>For error situations, you will only receive the following response:</p>
+				<pre class="prettyprint linenums">
+&lt;VT_TRANSACTION&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;
+	&lt;RESPONSECODE&gt; &lt;/RESPONSECODE&gt;
+&lt;/VT_TRANSACTION&gt;</pre>
+				<p>The COUNT value will be ‘-1’.</p>
+				</section>
+			</article>
+			<article id="manatron">
+				<h1><a name="manatron">Manatron Transaction</a></h1>
+				<section>
+					<h2><a name="manatronnote">Note:</a></h2>
+					<p><span class="label label-important">Required actions to add MVP to CSI client:</span></p>
+					<ol>
+						<li>Ensure VT tables exist in client profile</li>
+						<li>
+							Add MVP Product Name to CSI Customer Payment Type ID value for each payment type that will be processed.  If the payment type exists in MVP, but, not in CSI then add the payment type, as well.<br />
+							For CSI clients that are currently using Thomson Reuters web portal: Prior to updating Customer Payment Type ID value in CSI (in order to support MVP) coordinate with Thomson Reuters Web developers (Derek.Miller@thomsonreuters.com)  and have them update the value they are passing so that it is the same
+						</li>
+						<li>Have client administrator Add  user id from MVP (user_code) to user profiles in CSI (customer user id)</li>
+						<li>Update payment screen thread to <code>processPayment_Manatron_VirtualTerminal.aspx</code></li>
+					</ol>
+					<p>Web Page URL:  <a target="_blank" href="https://secure.collectorsolutions.com/csi_ecollections_portal_ui/interchange.aspx">https://secure.collectorsolutions.com/csi_ecollections_portal_ui/interchange.aspx</a></p>
+					<p>WebService URL: <a target="_blank" href="https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.asmx">https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.asmx</a></p>
+					<p>Security Token: [ClientKey]</p>
+					<p>Service Name: ProcessingGateway</p>
+					<h2><a name="manatronnote2">Note:</a></h2>
+					<p>All MVP User IDs (user_codes) and MVP Product Names must be Alpha-Numeric only.  Available characters are:</p>
+					<code>"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "</code>
+					<p>Additionally, all MVP User IDs (user_codes) and MVP Product Names must be <i>unique</i>.  No two users can have the same MVP User ID and no two payment types can have the same MVP Product Name.</p>
+				</section>
+				<section>
+					<h2><a name="manatronmethods">Methods</a></h2>
+					<code rel="tooltip" title="The VT_Transaction_POST_Manatron method allows CSI clients utilizing the Manatron MVP Tax Manager application to securely post transactional data that is to be used in a subsequent virtual terminal transaction request.">VT_Transaction_POST_Manatron</code><br />
+					<code rel="tooltip" title="The VT_Transaction_POST_Manatron_nonNET method allows CSI clients utilizing the Manatron MVP Tax Manager application to securely post transactional data that is to be used in a subsequent virtual terminal transaction request… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.">VT_Transaction_POST_Manatron_nonNET</code><br />
+					<code rel="tooltip" title="The VT_Transaction_GET_Mantron method allows CSI clients utilizing the Manatron MVP Tax Manager application to securely retrieve transactional data that is the result of a previous virtual terminal transaction request.">VT_Transaction_GET_Manatron</code><br />
+					<code rel="tooltip" title="The VT_Transaction_GET_Mantron_nonNET method allows CSI clients utilizing the Manatron MVP Tax Manager application to securely retrieve transactional data that is the result of a previous virtual terminal transaction request… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.">VT_Transaction_GET_Manatron_nonNET</code><br />
+				</section>
+				<section>
+					<h2><a name="manatronpost">XML Submission - VT_Transaction_Post_Manatron</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;PaymentInformation&gt;
+	&lt;SecurityToken&gt;&lt;/SecurityToken&gt;
+	&lt;VendorReferenceCode&gt;&lt;/VendorReferenceCode&gt;
+	&lt;CartItems&gt;
+		&lt;CartItem&gt;
+		&lt;ProductName&gt;&lt;/ProductName&gt;
+		&lt;AccountNumber1&gt;&lt;/AccountNumber1&gt;
+		&lt;Amount&gt;&lt;/Amount&gt;
+		&lt;/CartItem&gt;
+	&lt;/CartItems&gt;
+	&lt;UserField1&gt;&lt;/UserField1&gt;
+&lt;/PaymentInformation&gt;</pre>
+					<p>The UserField1 value is to be assigned the Customer User ID value which must have been previously assigned to a User Profile within the CSI system.</p>
+				</section>
+				<section>
+					<h2><a name="manatronpost2">XML Response - VT_Transaction_Post_Manatron</a></h2>
+					<pre class="prettyprint linenums">
+&lt;SaveInformationResponse&gt;
+	&lt;StatusCode&gt;&lt;/StatusCode&gt;
+	&lt;Token&gt;&lt;/Token&gt;
+	&lt;Message&gt;&lt;/Message&gt;
+&lt;/SaveInformationResponse&gt;</pre>
+					<p>The StatusCode value will be ‘0’ if the POST request was successful; it will be ‘9999’ if it is not.</p>
+					<p>The Token value will be the same as the VendorReferenceCode value passed to the method by the client.   In the event that the XML submission could not be parsed (causing the error condition) the Token value will be empty.</p>
+					<p>The Message value corresponds to the CSI RESPONSECODE value.</p>
+				</section>
+				<section>
+					<h2><a name="manatronredirect">Virtual Terminal Redirect</a></h2>
+					<code>https://secure.collectorsolutions.com/csi_ecollections_portal_ui/interchange.aspx?token=[value]</code><br />
+				</section>
+				<section>
+					<h2><a name="manatronget">XML Submission – VT_Transaction_GET_Manatron</a></h2>
+					<pre class="prettyprint linenums">
+&lt;PaymentVerification&gt;
+	&lt;SecurityToken&gt;&lt;/SecurityToken&gt;
+	&lt;VendorReferenceCode&gt;&lt;/VendorReferenceCode&gt;
+&lt;/PaymentVerification&gt;</pre>
+				</section>
+				<section>
+					<h2><a name="manatronget2">XML Response – VT_Transaction_GET_Manatron</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;PaymentVerificationResponse&gt;
+	&lt;StatusCode&gt;&lt;/StatusCode&gt;
+	&lt;TransactionDate&gt;&lt;/TransactionDate&gt;
+	&lt;Transactions&gt;
+		&lt;Transaction&gt;
+			&lt;ItemType&gt;&lt;/ItemType&gt;
+			&lt;ConfirmationNumber&gt;&lt;/ConfirmationNumber&gt;
+			&lt;Amount&gt;&lt;/Amount&gt;
+			&lt;ConvenienceFee&gt;&lt;/ConvenienceFee&gt;
+			&lt;AuthorizationCode&gt;&lt;/AuthorizationCode&gt;
+		&lt;/Transaction&gt;
+	&lt;/Transactions&gt;
+	&lt;PayeeName&gt;&lt;/PayeeName&gt;
+	&lt;PaymentType&gt;&lt;/PaymentType&gt;
+	&lt;LastFour&gt;&lt;/LastFour&gt;
+	&lt;CCExpiration&gt;&lt;/CCExpiration&gt;
+&lt;/PaymentVerificationResponse&gt;</pre>
+					<p>The StatusCode value will be ‘0’ if the transaction had been approved; it will be ‘2009 if the transaction had been Declined.</p>
+					<p>If the vendor reference code is NOT located in the system, you will only receive the following response:</p>
+					<pre class="prettyprint linenums">
+&lt;PaymentVerificationResponse&gt;
+	&lt;StatusCode&gt;&lt;/StatusCode&gt;
+&lt;/PaymentVerificationResponse&gt;</pre>
+					<p>The StatusCode value will be ‘0’.</p>
+					<p>For error situations, you will only receive the following response:</p>
+					<pre class="prettyprint linenums">
+&lt;PaymentVerificationResponse&gt;
+	&lt;StatusCode&gt;&lt;/StatusCode&gt;
+	&lt;Message&gt;&lt;/Message&gt;
+&lt;/PaymentVerificationResponse&gt;</pre>
+					<p>The StatusCode value will be ‘9999’.</p>
+					<p>The Message value corresponds to the CSI RESPONSECODE value.</p>
+				</section>
+			</article>
+			<article id="tokenization">
+				<h1><a name="tokenization">Tokenization</a></h1>
+				<section>
+					<h2><a name="tokenizationmethods">Methods</a></h2>
+					<code rel="tooltip" title="The recurringTransaction_TokenCreation method provides a gateway through which CSI clients may create a tokenized credit card record to be used for processing recurring credit card transactions.">recurringTransaction_TokenCreation</code><br />
+					<code rel="tooltip" title="The processRecurringTransaction_ByToken method provides a gateway through which CSI clients may process electronic credit card transactions utilizing a previously established credit card token value in place of actual credit card information.">processRecurringTransaction_ByToken</code><br />
+				</section>
+				<section>
+					<h2><a name="tokenizationcreate">XML Submission – recurringTransaction_TokenCreation : eCheck</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;RECURRINGTOKEN&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;TOKENID&gt;&lt;/TOKENID&gt;*                                                                                                       
+	&lt;PAYMENTMETHOD&gt;&lt;/PAYMENTMETHOD&gt;                                                                      
+	&lt;BANKNAME&gt;&lt;/BANKNAME&gt;
+	&lt;ACCOUNTTYPE&gt;&lt;/ACCOUNTTYPE&gt;
+	&lt;CHECKTYPE&gt;&lt;/CHECKTYPE&gt;
+	&lt;IAT&gt;&lt;/IAT&gt;                                                                                                                          
+	&lt;ROUTINGNUMBER&gt;&lt;/ROUTINGNUMBER&gt;
+	&lt;ACCOUNTNUMBER&gt;&lt;/ACCOUNTNUMBER&gt;
+	&lt;NAME&gt;&lt;/NAME&gt;
+	&lt;ADDRESS&gt;&lt;/ADDRESS&gt;
+	&lt;ADDRESSTWO&gt;&lt;/ADDRESSTWO&gt;
+	&lt;CITY&gt;&lt;/CITY&gt;
+	&lt;COUNTY&gt;&lt;/COUNTY&gt;
+	&lt;STATE&gt;&lt;/STATE&gt;
+	&lt;ZIP&gt;&lt;/ZIP&gt;
+	&lt;COUNTRY&gt;&lt;/COUNTRY&gt;
+	&lt;EMAIL&gt;&lt;/EMAIL&gt;
+	&lt;PHONE&gt;&lt;/PHONE&gt;
+&lt;/RECURRINGTOKEN&gt;</pre>
+					<p>* Must be unique value for all historical tokenized items.</p>
+					<p>Items in <span class="red">red</span> are optional (with exception to the above defined rules)</p>
+					<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>TOKENID</td>
+						<td></td>
+						<td>1 to 32 character alpha-numeric string generated by client</td>
+					</tr>
+					<tr>
+						<td>PAYMENTMETHOD</td>
+						<td>0, 1</td>
+						<td>
+							0 for Credit Card <br />
+							1 for Check
+						</td>
+					</tr>
+					<tr>
+						<td>BANKNAME</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ACCOUNTTYPE</td>
+						<td>1, 2</td>
+						<td>
+							1 for Checking<br /> 
+							2 for Savings<br />	
+						</td>
+					</tr>
+					<tr>
+						<td>CHECKTYPE</td>
+						<td>1, 2</td>
+						<td>
+							1 for Business<br /> 
+							2 for Personal	
+						</td>
+					</tr>
+					<tr>
+						<td>ROUTINGNUMBER</td>
+						<td></td>
+						<td>Numeric string of length 9</td>
+					</tr>
+					<tr>
+						<td>ACCOUNTNUMBER</td>
+						<td></td>
+						<td>Numeric string of length <=17</td>
+					</tr>
+					<tr>
+						<td>IAT</td>
+						<td>1, 2</td>
+						<td>
+							1 for United States (Domestic)<br />
+							2 for International
+						</td>
+					</tr>
+					<tr>
+						<td>NAME</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ADDRESS</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ADDRESSTWO</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>CITY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>COUNTY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>STATE</td>
+						<td>This should be the full State name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>ZIP</td>
+						<td></td>
+						<td>Alpha-numeric string of length <= 20</td>
+					</tr>
+					<tr>
+						<td>COUNTRY</td>
+						<td>This should be the full Country name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>EMAIL</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>PHONE</td>
+						<td></td>
+						<td>Numeric string of length = 10</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="tokenizationcreate2">XML Submission – recurringTransaction_TokenCreation : Credit Card</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;RECURRINGTOKEN&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;TOKENID&gt;&lt;/TOKENID&gt;*                                                                                                       
+	&lt;PAYMENTMETHOD&gt;&lt;/PAYMENTMETHOD&gt;                                                                      
+	&lt;CCNUMBER&gt;&lt;/CCNUMBER&gt;
+	&lt;EXPDATE&gt;&lt;/EXPDATE&gt;
+	&lt;NAME&gt;&lt;/NAME&gt;
+	&lt;ADDRESS&gt;&lt;/ADDRESS&gt;
+	&lt;ADDRESSTWO&gt;&lt;/ADDRESSTWO&gt;
+	&lt;CITY&gt;&lt;/CITY&gt;
+	&lt;COUNTY&gt;&lt;/COUNTY&gt;
+	&lt;STATE&gt;&lt;/STATE&gt;
+	&lt;ZIP&gt;&lt;/ZIP&gt;
+	&lt;COUNTRY&gt;&lt;/COUNTRY&gt;
+	&lt;EMAIL&gt;&lt;/EMAIL&gt;
+	&lt;PHONE&gt;&lt;/PHONE&gt;
+&lt;/RECURRINGTOKEN&gt;</pre>
+					<p>* Must be unique value for all historical tokenized items.</p>
+					<p>Items in <span class="red">red</span> are optional (with exception to the above defined rules)</p>
+					<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>TOKENID</td>
+						<td></td>
+						<td>1 to 32 character alpha-numeric string generated by client</td>
+					</tr>
+					<tr>
+						<td>PAYMENTMETHOD</td>
+						<td>0, 1</td>
+						<td>
+							0 for Credit Card <br />
+							1 for Check
+						</td>
+					</tr>
+					<tr>
+						<td>CCNUMBER</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>EXPDATE</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>NAME</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ADDRESS</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>ADDRESSTWO</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>CITY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>COUNTY</td>
+						<td></td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>STATE</td>
+						<td>This should be the full State name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>ZIP</td>
+						<td></td>
+						<td>Alpha-numeric string of length <= 20</td>
+					</tr>
+					<tr>
+						<td>COUNTRY</td>
+						<td>This should be the full Country name (as opposed to abbreviation)</td>
+						<td>String of length <= 50</td>
+					</tr>
+					<tr>
+						<td>EMAIL</td>
+						<td></td>
+						<td>String of length <= 100</td>
+					</tr>
+					<tr>
+						<td>PHONE</td>
+						<td></td>
+						<td>Numeric string of length = 10</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="tokenizationcreate3">XML Response – recurringTransaction_TokenCreation</a></h2>
+					<pre class="prettyprint linenums">
+&lt;RECURRINGTOKEN&gt;
+	&lt;TOKENID&gt;&lt;/TOKENID&gt;
+	&lt;TOKEN&gt;&lt;/TOKEN&gt;*                                                                                
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+&lt;/RECURRINGTOKEN&gt;</pre>
+					<p>*16 bit guid (36 characters including ‘-‘)</p>
+					<p>The TOKENID value will be the same as the value passed to the method by the client.   In the event that the XML submission could not be parsed (causing the error condition) the TOKENID value will be empty.</p>
+					<p>If an error occurs, the TOKEN value will be a sequence of zeros ‘00000000’.</p>
+				</section>
+				<section>
+					<h2><a name="tokenizationprocess">XML Submission – processRecurringTransaction_ByToken</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;TRANSACTION&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;PAYMENTMETHOD&gt;&lt;/PAYMENTMETHOD&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;**
+	&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+	&lt;FEEAMOUNT&gt;&lt;/FEEAMOUNT&gt;
+	&lt;TOKEN&gt;&lt;/TOKEN&gt;*
+	&lt;NOTES&gt;&lt;/NOTES&gt;
+	&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;****
+	&lt;CSIPAYERID&gt;&lt;/CSIPAYERID&gt;
+	&lt;CSIUSERID&gt;&lt;/CSIUSERID&gt;
+	&lt;LINEITEM&gt;
+		&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+		&lt;PAYMENTID_SECONDARY&gt;&lt;/PAYMENTID_SECONDARY&gt;
+		&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+		&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+	&lt;/LINEITEM&gt;
+&lt;/TRANSACTION&gt;</pre>
+					<p>* 16 bit guid (36 characters including ‘-‘)</p>
+					<p>** Value of 7 for PAP</p>
+					<p>Items in <span class="red">red</span> are optional (with exception to the above defined rules)</p>
+				</section>
+				<section>
+					<h2><a name="tokenizationprocess2">XML Response – processRecurringTransaction_ByToken</a></h2>
+					<pre class="prettyprint linenums">
+&lt;TRANSACTION&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;PRC&gt;&lt;/PRC&gt;
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+&lt;/TRANSACTION&gt;</pre>
+					<p>The TRANSACTIONID value will be the same as the value passed to the method by the client.   In the event that the XML submission could not be parsed (causing the error condition) the TRANSACTIONID value will be empty.</p>
+					<p>The PRC value will be a numeric string consisting of 8 digits that is unique to CollectorSolutions.  In the event that a submitted transaction fails prior to achieving a persistent state (e.g. during initial validation, etc), this value will be a sequence of zeros ‘00000000’.</p>
+				</section>
+			</article>
+			<article id="void">
+				<h1><a name="void">Void/Credit Processing</a></h1>
+				<section>
+					<h2><a name="void-methods">Methods</a></h2>
+					<code rel="tooltip" title="The processCredit method provides a gateway through which CSI clients may process credits for erroneously processed electronic check and credit card transactions.">processCredit</code><br />
+					<code rel="tooltip" title="The processCredit_nonNET method provides a gateway through which CSI clients may process credits for erroneously processed electronic check and credit card transactions… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.">processCredit_nonNET</code><br />
+				</section>
+				<section>
+					<h2><a name="void-submit">XML Submission</a></h2>
+					<pre class="prettyprint linenums">
+&lt;CREDIT&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;PRC&gt;&lt;/PRC&gt;
+	&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+	&lt;INTERNALCREDIT&gt;&lt;/INTERNALCREDIT&gt;
+	&lt;CHARGEBACK&gt;&lt;/CHARGEBACK&gt;
+	&lt;NOTES&gt;&lt;/NOTES&gt;
+	&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;*
+	&lt;CSIUSERID&gt;&lt;/CSIUSERID&gt;
+&lt;/CREDIT&gt;</pre>
+				<p>* This field is for backwards compatibility only.  The value will be overwritten by the CSI value organization unit id – process payment’ from the User (CSIUSERID value) profile.</p>
+				<p>Items in <span class="red">red</span> are optional (with exception to the above defined rules)</p>
+				<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>PRC</td>
+						<td></td>
+						<td>Numeric string consisting of 8 digits… must be same as PRC of ‘original’ transaction</td>
+					</tr>
+					<tr>
+						<td>AMOUNT</td>
+						<td></td>
+						<td>Currency <= the original transaction amount.  Note, this value should not reflect any fees charged for the original transaction.  The percentage of fees refunded (if applicable) will be automatically calculated by multiplying the original fee amount (if applicable) by the ratio of the credited amount/original amount. <span class="red">For transactions representing multiple payment items, this value must be the same as the original transaction.</span></td>
+					</tr>
+					<tr>
+						<td>INTERNALCREDIT</td>
+						<td>0, 1</td>
+						<td>0 for complete (resolves back to originated account), 1 for internal purposes only (updates reports for reconciliation) <span class="red">(for CSI use only)</span></td>
+					</tr>
+					<tr>
+						<td>CHARGEBACK</td>
+						<td>0, 1</td>
+						<td>0 for No, 1 for Yes <span class="red">(for CSI use only)</span></td>
+					</tr>
+					<tr>
+						<td>NOTES</td>
+						<td></td>
+						<td>String of length <= 255</td>
+					</tr>
+					<tr>
+						<td>CSIORGANIZATIONUNITID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Organizational Unit creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CSIUSERID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the User creation through Administration Console) </td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="void-response">XML Response</a></h2>
+					<pre class="prettyprint linenums">
+&lt;CREDIT&gt;
+	&lt;PRC&gt;&lt;/PRC&gt;
+	&lt;AMOUNTCREDITED&gt;&lt;/AMOUNTCREDITED&gt;
+	&lt;FEEAMOUNTCREDITED&gt;&lt;/FEEAMOUNTCREDITED&gt;
+	&lt;TOTALAMOUNTCREDITED&gt;&lt;/TOTALAMOUNTCREDITED&gt;
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;*
+&lt;/CREDIT&gt;</pre>
+					<p>The PRC node will be the same value as the original transaction.</p>
+					<p>If an error occurred, all ‘amount’ values will be set to the value -1.00.</p>
+				</section>
+			</article>
+			<article id="export-detailed-trans">
+				<h1><a name="export-detailed-trans">Export Detailed Transactions</a></h1>
+				<section>
+					<h2><a name="export-detailed-trans-methods">Methods</a></h2>
+					<code rel="tooltip" title="The export_DetailedTransactions method provides a gateway through which CSI clients may request detailed transaction history for updating their backend MIS and/or CIS systems.">export_DetailedTransactions</code><br />
+					<code rel="tooltip" title="The export_DetailedTransactions_nonNET method provides a gateway through which CSI clients may request detailed transaction history for updating their backend MIS and/or CIS systems… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.">export_DetailedTransactions_nonNET</code><br />
+					<code rel="tooltip" title="The export_DetailedTransactions_Update method provides a gateway through which CSI clients may request detailed transaction history for updating their backend MIS and/or CIS systems that has not been provided in a previous update request (any transactions returned via this request will be flagged as updated and, subsequently, not be returned in future requests).">export_DetailedTransactions_Update</code><br />
+					<code rel="tooltip" title="The export_DetailedTransactions_Update_nonNET method provides a gateway through which CSI clients may request detailed transaction history for updating their backend MIS and/or CIS systems that has not been provided in a previous update request (any transactions returned via this request will be flagged as updated and, subsequently, not be returned in future requests)…. this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.">export_DetailedTransactions_Update_nonNET</code><br /><br />
+					<p>The <code>export_DetailedTransactions</code> and <code>export_DetailedTransactions_nonNET</code> methods will return all transactions that occurred during the specified date range.</p>
+
+					<p>The <code>export_DetailedTransactions_Update</code> and <code>export_DetailedTransactions_Update_nonNET</code> methods are nuanced in that only those transactions that have not been included in previous export requests will be returned.</p>
+				</section>
+				<section>
+					<h2><a name="export-detailed-trans-submit">XML Submission – export_DetailTransactions</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;EXPORT&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;STARTDATE&gt;&lt;/STARTDATE&gt;      
+	&lt;ENDDATE&gt;&lt;/ENDDATE&gt;      
+	&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;
+	&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>Items in <span class="red">red</span> are optional</p>
+					<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>STARTDATE</td>
+						<td></td>
+						<td>Date value formatted ‘mm/dd/yyyy’</td>
+					</tr>
+					<tr>
+						<td>ENDDATE</td>
+						<td></td>
+						<td>Date value formatted ‘mm/dd/yyyy’</td>
+					</tr>
+					<tr>
+						<td>CSIORGANIZATIONUNITID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Organizational Unit creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CUSTOMERPAYMENTTYPEID</td>
+						<td></td>
+						<td>Alpha-numeric string value <= 32 generated by client and used for the purpose of a join between the CSI portal and the client’s MIS and/or CIS systems</td>
+					</tr>
+					<tr>
+						<td>COLLECTIONMODE</td>
+						<td>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</td>
+						<td>
+						1 for Web<br />
+						2 for POS (manual)<br />
+						3 for POS (scanned)<br />
+						4 for Tel<br />
+						5 for IVR<br />
+						6 for Email<br />
+						7 for Pre-Authorization<br />
+						8 for Web (other)<br />
+						9 for Mailroom-Dropbox (manual)<br />
+						10 for Mailroom-Dropbox (scanned)
+						</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="export-detailed-trans-submit2">XML Submission – export_DetailTransactions_Update</a></h2>
+					<pre class="prettyprint linenums">
+&lt;EXPORT&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;
+	&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>Items in <span class="red">red</span> are optional</p>
+					<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>CSIORGANIZATIONUNITID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Organizational Unit creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CUSTOMERPAYMENTTYPEID</td>
+						<td></td>
+						<td>Alpha-numeric string value <= 32 generated by client and used for the purpose of a join between the CSI portal and the client’s MIS and/or CIS systems</td>
+					</tr>
+					<tr>
+						<td>COLLECTIONMODE</td>
+						<td>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</td>
+						<td>
+						1 for Web<br />
+						2 for POS (manual)<br />
+						3 for POS (scanned)<br />
+						4 for Tel<br />
+						5 for IVR<br />
+						6 for Email<br />
+						7 for Pre-Authorization<br />
+						8 for Web (other)<br />
+						9 for Mailroom-Dropbox (manual)<br />
+						10 for Mailroom-Dropbox (scanned)
+						</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="export-detailed-trans-response">XML Response</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;EXPORT&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;    
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+	&lt;TRANSACTION&gt;
+		&lt;EFFECTIVEDATE&gt;&lt;/EFFECTIVEDATE&gt;
+		&lt;NAME&gt;&lt;/NAME&gt;
+		&lt;PRC&gt;&lt;/PRC&gt;
+		&lt;PAYMENTMETHOD&gt;&lt;/PAYMENTMETHOD&gt;
+		&lt;BANKNAME&gt;&lt;/BANKNAME&gt;
+		&lt;CHECKNUMBER&gt;&lt;/CHECKNUMBER&gt;
+		&lt;ROUTINGNUMBER&gt;&lt;/ROUTINGNUMBER&gt;
+		&lt;ACCOUNTNUMBER&gt;&lt;/ACCOUNTNUMBER&gt;
+		&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;
+		&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+		&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+		&lt;LINEITEM&gt;
+			&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+			&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+			&lt;PAYMENTIDSECONDARY&gt;&lt;/PAYMENTIDSECONDARY&gt;
+			&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+		&lt;/LINEITEM&gt;
+	&lt;/TRANSACTION&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>The PAYMENTMETHOD value is expanded from that of the Transaction submission.  This node may take on the following values:</p>
+					<ul class="no-list-style">
+						<li><span class="badge badge-info">3</span>American Express</li>
+						<li><span class="badge badge-default">9</span>Check</li>
+						<li><span class="badge badge-warning">6</span>Discover</li>
+						<li><span class="badge badge-important">5</span>MasterCard</li>
+						<li><span class="badge badge-success">4</span>VISA</li>
+					</ul>
+					<p>The items in red will only be present for a PAYMENTMETHOD value of 9.</p>
+					<p>The COUNT node will be a long value representing the number of transactions identified for the provided filter(s).  If an error occurred, this value will be set to -1.</p>
+					<p>For error situations, you will only receive the following response:</p>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;EXPORT&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;    
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>The COUNT value will be ‘-1’.</p>
+			</article>
+			<article id="export-check-credits">
+				<h1><a name="export-check-credits">Export Check Credits</a></h1>
+				<section>
+					<h2><a name="export-check-credits-methods">Methods</a></h2>
+					<code rel="tooltip" title="The export_checkCredits method provides a gateway through which CSI clients may request check credit history for updating their backend MIS and/or CIS systems.">export_CheckCredits</code>
+				</section>
+				<section>
+					<h2><a name="export-check-credits-submit">XML Submission</a></h2>
+					<pre class="prettyprint linenums">
+&lt;EXPORT&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;STARTDATE&gt;&lt;/STARTDATE&gt;      
+	&lt;ENDDATE&gt;&lt;/ENDDATE&gt;
+	&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;
+	&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>Items in <span class="red">red</span> are optional</p>
+					<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>STARTDATE</td>
+						<td></td>
+						<td>Date value formatted ‘mm/dd/yyyy’</td>
+					</tr>
+					<tr>
+						<td>ENDDATE</td>
+						<td></td>
+						<td>Date value formatted ‘mm/dd/yyyy’</td>
+					</tr>
+					<tr>
+						<td>CSIORGANIZATIONUNITID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Organizational Unit creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CUSTOMERPAYMENTTYPEID</td>
+						<td></td>
+						<td>Alpha-numeric string value <= 32 generated by client and used for the purpose of a join between the CSI portal and the client’s MIS and/or CIS systems</td>
+					</tr>
+					<tr>
+						<td>COLLECTIONMODE</td>
+						<td>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</td>
+						<td>
+						1 for Web<br />
+						2 for POS (manual)<br />
+						3 for POS (scanned)<br />
+						4 for Tel<br />
+						5 for IVR<br />
+						6 for Email<br />
+						7 for Pre-Authorization<br />
+						8 for Web (other)<br />
+						9 for Mailroom-Dropbox (manual)<br />
+						10 for Mailroom-Dropbox (scanned)
+						</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="export-check-credits-response">XML Response</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;EXPORT&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;    
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+	&lt;TRANSACTION&gt;
+		&lt;EFFECTIVEDATE&gt;&lt;/EFFECTIVEDATE&gt;
+		&lt;CREDITDATE&gt;&lt;/CREDITDATE&gt;
+		&lt;CREDITTYPE&gt;&lt;/CREDITTYPE&gt;
+		&lt;NAME&gt;&lt;/NAME&gt;
+		&lt;PRC&gt;&lt;/PRC&gt;
+		&lt;EMAIL&gt;&lt;/EMAIL&gt;
+		&lt;NOTES&gt;&lt;/NOTES&gt;
+		&lt;BANKNAME&gt;&lt;/BANKNAME&gt;
+		&lt;CHECKNUMBER&gt;&lt;/CHECKNUMBER&gt;
+		&lt;ROUTINGNUMBER&gt;&lt;/ROUTINGNUMBER&gt;
+		&lt;ACCOUNTNUMBER&gt;&lt;/ACCOUNTNUMBER&gt;
+		&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;
+		&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+		&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+		&lt;CREDITAMOUNT&gt;&lt;/CREDITAMOUNT&gt;
+		&lt;LINEITEM&gt;
+			&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+			&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+			&lt;PAYMENTIDSECONDARY&gt;&lt;/PAYMENTIDSECONDARY&gt;
+			&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+		&lt;/LINEITEM&gt;
+	&lt;/TRANSACTION&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>The COUNT node will be a long value representing the number of transactions identified for the provided filter(s).</p>
+					<p>For error situations, you will only receive the following response:</p>
+					<pre class="prettyprint linenums">
+&lt;EXPORT&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;    
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>The COUNT value will be ‘-1’.</p>
+			</article>
+			<article id="export-check-returns">
+				<h1><a name="export-check-returns">Export Check Returns</a></h1>
+				<section>
+					<h2><a name="export-check-returns-methods">Methods</a></h2>
+					<code rel="tooltip" title="The export_checkReturns method provides a gateway through which CSI clients may request check return history for updating their backend MIS and/or CIS systems.">export_CheckReturns</code>
+				</section>
+				<section>
+					<h2><a name="export-check-returns-submit">XML Submission</a></h2>
+					<pre class="prettyprint linenums">
+&lt;EXPORT&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;
+	&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>Items in <span class="red">red</span> are optional</p>
+					<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>CSIORGANIZATIONUNITID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Organizational Unit creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CUSTOMERPAYMENTTYPEID</td>
+						<td></td>
+						<td>Alpha-numeric string value <= 32 generated by client and used for the purpose of a join between the CSI portal and the client’s MIS and/or CIS systems</td>
+					</tr>
+					<tr>
+						<td>COLLECTIONMODE</td>
+						<td>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</td>
+						<td>
+						1 for Web<br />
+						2 for POS (manual)<br />
+						3 for POS (scanned)<br />
+						4 for Tel<br />
+						5 for IVR<br />
+						6 for Email<br />
+						7 for Pre-Authorization<br />
+						8 for Web (other)<br />
+						9 for Mailroom-Dropbox (manual)<br />
+						10 for Mailroom-Dropbox (scanned)
+						</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="export-check-returns-response">XML Response</a></h2>
+					<pre class="prettyprint pre-scrollable linenums">
+&lt;EXPORT&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;    
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+	&lt;TRANSACTION&gt;
+		&lt;EFFECTIVEDATE&gt;&lt;/EFFECTIVEDATE&gt;
+		&lt;RETURNDATE&gt;&lt;/RETURNDATE&gt;
+		&lt;RETURNCODE&gt;&lt;/RETURNCODE&gt;
+		&lt;NAME&gt;&lt;/NAME&gt;
+		&lt;PRC&gt;&lt;/PRC&gt;
+		&lt;BANKNAME&gt;&lt;/BANKNAME&gt;
+		&lt;CHECKNUMBER&gt;&lt;/CHECKNUMBER&gt;
+		&lt;ROUTINGNUMBER&gt;&lt;/ROUTINGNUMBER&gt;
+		&lt;ACCOUNTNUMBER&gt;&lt;/ACCOUNTNUMBER&gt;
+		&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;
+		&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+		&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+		&lt;LINEITEM&gt;
+			&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+			&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+			&lt;PAYMENTIDSECONDARY&gt;&lt;/PAYMENTIDSECONDARY&gt;
+			&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+		&lt;/LINEITEM&gt;
+	&lt;/TRANSACTION&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>The COUNT node will be a long value representing the number of transactions identified for the provided filter(s).</p>
+					<p>For error situations, you will only receive the following response:</p>
+					<pre class="prettyprint linenums">
+&lt;EXPORT&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;    
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>The COUNT value will be ‘-1’.</p>
+			</article>
+			<article id="export-credit-card-credits">
+				<h1><a name="export-credit-card-credits">Export Credit Card Credits</a></h1>
+				<section>
+					<h2><a name="export-credit-card-credits-methods">Methods</a></h2>
+					<code rel="tooltip" title="The export_creditCardCredits method provides a gateway through which CSI clients may request credit card credit history for updating their backend MIS and/or CIS systems.">export_CreditCardCredits</code>
+				</section>
+				<section>
+					<h2><a name="export-credit-card-credits-submit">XML Submission</a></h2>
+					<pre class="prettyprint linenums">
+&lt;EXPORT&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;STARTDATE&gt;&lt;/STARTDATE&gt;      
+	&lt;ENDDATE&gt;&lt;/ENDDATE&gt;
+	&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;
+	&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>Items in <span class="red">red</span> are optional</p>
+					<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					<tr>
+						<td>STARTDATE</td>
+						<td></td>
+						<td>Date value formatted ‘mm/dd/yyyy’</td>
+					</tr>
+					<tr>
+						<td>ENDDATE</td>
+						<td></td>
+						<td>Date value formatted ‘mm/dd/yyyy’</td>
+					</tr>
+					<tr>
+						<td>CSIORGANIZATIONUNITID</td>
+						<td></td>
+						<td>Numeric (long) value (Assigned during the Organizational Unit creation through Administration Console)</td>
+					</tr>
+					<tr>
+						<td>CUSTOMERPAYMENTTYPEID</td>
+						<td></td>
+						<td>Alpha-numeric string value <= 32 generated by client and used for the purpose of a join between the CSI portal and the client’s MIS and/or CIS systems</td>
+					</tr>
+					<tr>
+						<td>COLLECTIONMODE</td>
+						<td>1, 2, 3, 4, 5, 6, 7, 8, 9, 10</td>
+						<td>
+						1 for Web<br />
+						2 for POS (manual)<br />
+						3 for POS (scanned)<br />
+						4 for Tel<br />
+						5 for IVR<br />
+						6 for Email<br />
+						7 for Pre-Authorization<br />
+						8 for Web (other)<br />
+						9 for Mailroom-Dropbox (manual)<br />
+						10 for Mailroom-Dropbox (scanned)
+						</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="export-credit-card-credits-response">XML Response</a></h2>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;EXPORT&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;    
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+	&lt;TRANSACTION&gt;
+		&lt;EFFECTIVEDATE&gt;&lt;/EFFECTIVEDATE&gt;
+		&lt;CREDITDATE&gt;&lt;/CREDITDATE&gt;
+		&lt;CREDITTYPE&gt;&lt;/CREDITTYPE&gt;
+		&lt;NAME&gt;&lt;/NAME&gt;
+		&lt;PRC&gt;&lt;/PRC&gt;
+		&lt;EMAIL&gt;&lt;/EMAIL&gt;
+		&lt;NOTES&gt;&lt;/NOTES&gt;
+		&lt;CSIORGANIZATIONUNITID&gt;&lt;/CSIORGANIZATIONUNITID&gt;
+		&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+		&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+		&lt;CREDITAMOUNT&gt;&lt;/CREDITAMOUNT&gt;
+		&lt;LINEITEM&gt;
+			&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+			&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+			&lt;PAYMENTIDSECONDARY&gt;&lt;/PAYMENTIDSECONDARY&gt;
+			&lt;ITEMAMOUNT&gt;&lt;/ITEMAMOUNT&gt;
+		&lt;/LINEITEM&gt;
+	&lt;/TRANSACTION&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>The PAYMENTMETHOD value is expanded from that of the Transaction submission.  This node may take on the following values:</p>
+					<ul class="no-list-style">
+						<li><span class="badge badge-info">3</span>American Express</li>
+						<li><span class="badge badge-warning">6</span>Discover</li>
+						<li><span class="badge badge-important">5</span>MasterCard</li>
+						<li><span class="badge badge-success">4</span>VISA</li>
+					</ul>
+					<p>The COUNT node will be a long value representing the number of transactions identified for the provided filter(s).</p>
+					<p>For error situations, you will only receive the following response:</p>
+					<pre class="prettyprint linenums">
+&lt;EXPORT&gt;
+	&lt;COUNT&gt;&lt;/COUNT&gt;    
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+&lt;/EXPORT&gt;</pre>
+					<p>The COUNT value will be ‘-1’.</p>
+			</article>
+			<article id="export-credit-card-fee-structure">
+				<h1><a name="export-credit-card-fee-structure">Export Credit Card Fee Structure</a></h1>
+				<section>
+					<h2><a name="export-credit-card-fee-structure-methods">Methods</a></h2>
+					<code rel="tooltip" title="The export_FeeStructure_CreditCards method provides a gateway through which CSI clients may request the CSI credit card fee rates for local caching… this method is provided for those developers who do not wish to use the calculatedFee method during real-time calls.">export_FeeStructure_CreditCards</code>
+				</section>
+				<section>
+					<h2><a name="export-credit-card-fee-structure-submit">XML Submission</a></h2>
+					<pre class="prettyprint linenums">
+&lt;EXPORT&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+&lt;/EXPORT&gt;</pre>
+					<table class="table striped table-bordered table-hover">
+					<tr class="info">
+						<td>Name</td>
+						<td>Value</td>
+						<td>Notes</td>
+					</tr>
+					<tbody>
+					<tr>
+						<td>CLIENTKEY</td>
+						<td></td>
+						<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+					</tr>
+					</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="export-credit-card-fee-structure-response">DataSet Response</a></h2>
+					<p>For this method, a .Net dataset object will be returned.  In the event of an error, the dataset will be empty.</p>
+					<p>Following is a sample xml schema for the returned dataset object:</p>
+					<pre class="prettyprint pre-scrollable">
+&lt;CSI_CreditCard_Structure&gt;
+     &lt;fees&gt;
+         &lt;creditCardFeeID&gt;1&lt;/creditCardFeeID&gt;
+         &lt;lowerLimit&gt;0&lt;/lowerLimit&gt;
+         &lt;upperLimit&gt;33.0000&lt;/upperLimit&gt;
+         &lt;baseFee_POP_Manual&gt;1.0000&lt;/baseFee_POP_Manual&gt;
+         &lt;percentFee_POP_Manual&gt;0&lt;/percentFee_POP_Manual&gt;
+         &lt;baseFee_POP_Electronic&gt;1.0000&lt;/baseFee_POP_Electronic&gt;
+         &lt;percentFee_POP_Electronic&gt;0&lt;/percentFee_POP_Electronic&gt;
+         &lt;baseFee_PreAuthorization&gt;1.0000&lt;/baseFee_PreAuthorization&gt;
+         &lt;percentFee_PreAuthorization&gt;0&lt;/percentFee_PreAuthorization&gt;
+         &lt;baseFee_Email&gt;1.0000&lt;/baseFee_Email&gt;
+         &lt;percentFee_Email&gt;0&lt;/percentFee_Email&gt;
+         &lt;baseFee_IVR&gt;1.0000&lt;/baseFee_IVR&gt;
+         &lt;percentFee_IVR&gt;0&lt;/percentFee_IVR&gt;
+         &lt;baseFee_Web&gt;1.0000&lt;/baseFee_Web&gt;
+         &lt;percentFee_Web&gt;0&lt;/percentFee_Web&gt;
+         &lt;baseFee_Tel&gt;1.0000&lt;/baseFee_Tel&gt;
+         &lt;percentFee_Tel&gt;0&lt;/percentFee_Tel&gt;
+         &lt;baseFee_MailDrop_Manual&gt;1.0000&lt;/baseFee_MailDrop_Manual&gt;
+         &lt;percentFee_MailDrop_Manual&gt;0&lt;/percentFee_MailDrop_Manual&gt;
+     &lt;/fees&gt;
+     &lt;fees&gt;
+         &lt;creditCardFeeID&gt;2&lt;/creditCardFeeID&gt;
+         &lt;lowerLimit&gt;33.0100&lt;/lowerLimit&gt;
+         &lt;upperLimit&gt;100.0000&lt;/upperLimit&gt;
+         &lt;baseFee_POP_Manual&gt;0&lt;/baseFee_POP_Manual&gt;
+         &lt;percentFee_POP_Manual&gt;0.03&lt;/percentFee_POP_Manual&gt;
+         &lt;baseFee_POP_Electronic&gt;0&lt;/baseFee_POP_Electronic&gt;
+         &lt;percentFee_POP_Electronic&gt;0.03&lt;/percentFee_POP_Electronic&gt;
+         &lt;baseFee_PreAuthorization&gt;0&lt;/baseFee_PreAuthorization&gt;
+         &lt;percentFee_PreAuthorization&gt;0.03&lt;/percentFee_PreAuthorization&gt;
+         &lt;baseFee_Email&gt;0&lt;/baseFee_Email&gt;
+         &lt;percentFee_Email&gt;0.03&lt;/percentFee_Email&gt;
+         &lt;baseFee_IVR&gt;0&lt;/baseFee_IVR&gt;
+         &lt;percentFee_IVR&gt;0.03&lt;/percentFee_IVR&gt;
+         &lt;baseFee_Web&gt;0&lt;/baseFee_Web&gt;
+         &lt;percentFee_Web&gt;0.03&lt;/percentFee_Web&gt;
+         &lt;baseFee_Tel&gt;0&lt;/baseFee_Tel&gt;
+         &lt;percentFee_Tel&gt;0.03&lt;/percentFee_Tel&gt;
+         &lt;baseFee_MailDrop_Manual&gt;0&lt;/baseFee_MailDrop_Manual&gt;
+         &lt;percentFee_MailDrop_Manual&gt;0.03&lt;/percentFee_MailDrop_Manual&gt;
+       &lt;/fees&gt;
+	   .
+	   .
+	   .
+&lt;/CSI_CreditCard_Structure&gt;</pre>
+					<p>The number of ‘fees’ nodes are variable depending on the granularity and range of the pricing ranges.</p>
+				</section>
+			</article>
+			<article id="verify-transaction">
+				<h1><a name="verify-transaction">Verify Transaction</a></h1>
+				<section>
+					<h2><a name="verify-transaction-methods">Methods</a></h2>
+					<code rel="tooltip" title="The verifyTransaction method provides a gateway through which CSI clients may verify that a transaction request processed successfully.">verifyTransaction</code><br />
+					<code rel="tooltip" title="The verifyTransaction_nonNET method provides a gateway through which CSI clients may verify that a transaction request processed successfully… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.">verifyTransaction_nonNET</code>
+				</section>
+			</article>
+			<article id="verify-payment-id">
+				<h1><a name="verify-payment-id">Verify Payment ID</a></h1>
+				<section>
+					<h2><a name="verify-payment-id-methods">Methods</a></h2>
+					<code rel="tooltip" title="The verifyPaymentID method provides a gateway through which CSI clients may verify locally (CSI) persisted payment ids. For this method to be effective the client must have established a method by which those payment ids are communicated to CSI for local persistence.">verifyPaymentID</code><br />
+					<code rel="tooltip" title="The verifyPaymentID method provides a gateway through which CSI clients may verify locally (CSI) persisted payment ids. For this method to be effective the client must have established a method by which those payment ids are communicated to CSI for local persistence…. this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.">verifyPaymentID_nonNET</code>
+				</section>
+				<section>
+					<h2><a name="verify-payment-id-submit">XML Submission</a></h2>
+					<pre class="prettyprint linenums">
+&lt;VERIFY&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;CUSTOMERPAYMENTTYPEID&gt;&lt;/CUSTOMERPAYMENTTYPEID&gt;
+	&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+&lt;/VERIFY&gt;&lt;</pre>
+					<table class="table striped table-bordered table-hover">
+						<tr class="info">
+							<td>Name</td>
+							<td>Value</td>
+							<td>Notes</td>
+						</tr>
+						<tbody>
+							<tr>
+								<td>CLIENTKEY</td>
+								<td></td>
+								<td>32 character alpha-numeric string assigned during initial set-up by CSI</td>
+							</tr>
+							<tr>
+								<td>CUSTOMERPAYMENTTYPEID</td>
+								<td></td>
+								<td>Alpha-numeric string value <= 32 generated by client and used for the purpose of a join between the CSI portal and the client’s MIS and/or CIS systems</td>
+							</tr>
+							<tr>
+								<td>PAYMENTID</td>
+								<td></td>
+								<td>Alpha-numeric string <=100 generated by client</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="verify-payment-id-response">XML Response</a></h2>
+					<pre class="prettyprint linenums">
+&lt;VERIFY&gt;
+	&lt;VERIFIED&gt;&lt;/VERIFIED&gt;
+	&lt;AMOUNTDUE&gt;&lt;/AMOUNTDUE&gt;
+	&lt;PAYMENTID&gt;&lt;/PAYMENTID&gt;
+	&lt;CUSTOMERDESCRIPTOR_PRIMARY&gt;&lt;/CUSTOMERDESCRIPTOR_PRIMARY&gt;
+	&lt;CUSTOMERDESCRIPTOR_SECONDARY&gt;&lt;/CUSTOMERDESCRIPTOR_SECONDARY&gt;
+&lt;/VERIFY&gt;&lt;</pre>
+					<p>The VERIFIED value will be ‘2’.</p>
+					<p>If the transaction id is NOT located in the system, you will only receive the following response:</p>
+					<pre class="prettyprint linenums">
+&lt;VERIFY&gt;
+	&lt;VERIFIED&gt;&lt;/VERIFIED&gt;
+&lt;/VERIFY&gt;&lt;</pre>
+					<p>The VERIFIED value will be ‘1’.</p>
+					<p>For error situations, you will only receive the following response:</p>
+					<pre class="prettyprint linenums">
+&lt;VERIFY&gt;
+	&lt;VERIFIED&gt;&lt;/VERIFIED&gt;
+	&lt;RESPONSECODE&gt;&lt;/RESPONSECODE&gt;
+&lt;/VERIFY&gt;&lt;</pre>
+					<p>The VERIFIED value will be ‘-1’.</p>
+				</section>
+			</article>
+			<article id="test-values">
+				<h1><a name="test-values">Test Values</a></h1>
+				<section>
+					<h2><a name="test-values-credit-card">Credit Card Values</a></h2>
+					<table class="table striped table-bordered table-hover">
+						<tr class="info">
+							<td>Name</td>
+							<td>Expiration Date</td>
+							<td>CVV2</td>
+							<td>Result</td>
+						</tr>
+						<tbody>
+							<tr>
+								<td>4111111111111111</td>
+								<td>1218</td>
+								<td>123</td>
+								<td>YTESTEDY</td>
+							</tr>
+							<tr>
+								<td>5431111111111111</td>
+								<td>1218</td>
+								<td>1234</td>
+								<td>N511111N : Declined Transaction Test Scenario</td>
+							</tr><tr>
+								<td>341111111111111</td>
+								<td>1218</td>
+								<td>123</td>
+								<td>N919999N : General Error Test Scenario</td>
+							</tr>
+							<tr>
+								<td>6011601160116611</td>
+								<td>1218</td>
+								<td>123</td>
+								<td>N319999N : Invalid Data Test Scenario</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+				<section>
+					<h2><a name="test-values-check">Check Values</a></h2>
+					<table class="table striped table-bordered table-hover">
+						<tr class="info">
+							<td>Routing Number</td>
+							<td>Account Number</td>
+							<td>Result</td>
+						</tr>
+						<tbody>
+							<tr>
+								<td>063210112</td>
+								<td>4111111111</td>
+								<td>YTESTEDY</td>
+							</tr>
+							<tr>
+								<td>063210112</td>
+								<td>1111111111</td>
+								<td>N919999N : General Error Test Scenario</td>
+							</tr><tr>
+								<td>063210112</td>
+								<td>9999999999</td>
+								<td>N319999N : Invalid Data Test Scenario</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+			</article>
+			<article id="test-connectivity">
+				<h1><a name="test-connectivity">Test Connectivity</a></h1>
+				<section>
+					<h2><a name="test-connectivity-methods">Methods</a></h2>
+					<code rel="tooltip" title="The test_nonNET method accepts a simple string of less than 32 characters (any extra characters will simply be truncated) as an argument and returns the same string in reverse order… the method is provided for developers to utilize in order to quickly develop a simple proof of concept demonstrating SOAP connectivity and interaction with the CSI eCollections Portal.">test_nonNET</code>
+					<p>The test_nonNET method accepts a simple string of less than 32 characters (any extra characters will simply be truncated) as an argument and returns the same string in reverse order… the method is provided for developers to utilize in order to quickly develop a simple proof of concept demonstrating SOAP connectivity and interaction with the CSI eCollections Portal.</p>
+				</section>
+			</article>
+			<article id="invalid-chars">
+				<h1><a name="invalid-chars">Invalid XML Characters</a></h1>
+				<section>
+					<p>There are several characters that are not allowed in the XML context.  However, for these characters, there are predefined references that can be used for their representation.</p>
+					<table class="table striped table-bordered table-hover">
+						<tr class="info">
+							<td>Invalid Character</td>
+							<td>Reference</td>
+						</tr>
+						<tbody>
+							<tr>
+								<td>&lt;</td>
+								<td>&amp;lt;</td>
+							</tr>
+							<tr>
+								<td>&gt;</td>
+								<td>&amp;gt;</td>
+							</tr>
+							<tr>
+								<td>&amp;</td>
+								<td>&amp;amp;</td>
+							</tr>
+							<tr>
+								<td>&apos;</td>
+								<td>&amp;apos;</td>
+							</tr>
+							<tr>
+								<td>&quot;</td>
+								<td>&amp;quot;</td>
+							</tr>
+						</tbody>
+					</table>
+					<p>Note: Only the characters “&lt;” and “&amp;” are strictly illegal in XML. Apostrophes, quotation marks and greater than signs are legal, but it is a good habit to replace them.</p>
+					<p>The CDATA tag can be used to avoid invalid character errors, as well.</p>
+					<p>Everything inside a CDATA section is ignored by the parser.  Thus, if your text contains a lot of ”&lt;” or “&amp;” characters, the XML element can be defined as a CDATA section.</p>
+					<p>A CDATA section starts with “&lt;![CDATA[“ and ends with “]]&gt”:</p>
+					<pre class="prettyprint linenums pre-scrollable">
+&lt;TRANSACTION&gt;
+	&lt;CLIENTKEY&gt;&lt;/CLIENTKEY&gt;
+	&lt;TRANSACTIONID&gt;&lt;/TRANSACTIONID&gt;
+	&lt;PAYMENTMETHOD&gt;&lt;/PAYMENTMETHOD&gt;
+	&lt;AUTHFORCE&gt;&lt;/AUTHFORCE&gt;
+	&lt;COLLECTIONMODE&gt;&lt;/COLLECTIONMODE&gt;
+	&lt;PRC&gt;&lt;/PRC&gt;				
+	&lt;AMOUNT&gt;&lt;/AMOUNT&gt;
+	&lt;FEEAMOUNT&gt;&lt;/FEEAMOUNT&gt;
+	&lt;NAME&gt;&lt;![CDATA[Ben &amp; Jerry’s]]&lt;/NAME&gt;
+	.
+	.
+	.
+&lt;TRANSACTION&gt;</pre>
+					<p>Note: A CDATA section cannot contain the string “]]>”.</p>
+					<p>For the CSI portal, CDATA sections are not supported.  Rather,  the ampersand (&amp;) and apostrophe (&pos;) characters should be encoded (as specified in the table above).</p>
+					<p>The three other invalid characters will not be supported.</p>
+				</section>
+			</article>
+			<article id="methods">
+				<h1><a name="methods">Appendix A - Methods</a></h1>
+				<section>
+					<p>Method Descriptions for the CSI ProcessingGateway web-service:</p>
+					<code>https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.asmx</code>
+					<p>The CSI ProcessingGateway web-service provides our clients with multiple utilities that facilitate the real-time processing and management of internet based credit card and eCheck transactions. This service is intended for the use of current CSI clients ONLY. Any unauthorized use is strictly prohibited.</p>
+					<p>The following operations are supported. For a formal definition, please review the Service Description.</p>
+					<ul class="no-list-style">
+					<li>
+						<code>calculateFee</code><br />
+						<p>The calculateFee method calculates and returns the fee that CSI will apply to a particular transaction.</p>
+					<li>
+						<code>calculatefee_nonNET</code><br />
+						<p>The calculateFee_nonNET method calculates and returns the fee that CSI will apply to a particular transaction… the method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.</p>
+					</li>
+					<li>
+						<code>calculatefee_nonNET_XMLObjectResponse</code><br />
+						<p>The calculateFee_nonNET_XMLObjectResponse method calculates and returns the fee that CSI will apply to a particular transaction… the method is provided for those developers who are not using .NET and/or who wish to pass in an XML argument as a string, but, wish to have the response return as an System.xml.XMLDocument object. </p>
+					</li>
+					<li>
+						<code>export_checkCredits</code><br />
+						<p>The export_checkCredits method provides a gateway through which CSI clients may request check credit history for updating their backend MIS and/or CIS systems.</p> 
+					</li>
+					<li>
+						<code>export_checkReturns</code><br />
+						<p>The export_checkReturns method provides a gateway through which CSI clients may request check return history for updating their backend MIS and/or CIS systems.</p> 
+					</li>
+					<li>
+						<code>export_creditCardCredits</code><br />
+						<p>The export_creditCardCredits method provides a gateway through which CSI clients may request credit card credit history for updating their backend MIS and/or CIS systems. </p>
+					</li>
+					<li>
+						<code>export_DetailedTransactions</code><br />
+						<p>The export_DetailedTransactions method provides a gateway through which CSI clients may request detailed transaction history for updating their backend MIS and/or CIS systems. </p>
+					</li>
+					<li>
+						<code>export_DetailedTransactions_nonNET</code><br />
+						<p>The export_DetailedTransactions_nonNET method provides a gateway through which CSI clients may request detailed transaction history for updating their backend MIS and/or CIS systems… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object. </p>
+					</li>
+					<li>
+						<code>export_DetailedTransactions_Update</code><br />
+						<p>The export_DetailedTransactions_Update method provides a gateway through which CSI clients may request detailed transaction history for updating their backend MIS and/or CIS systems that has not been provided in a previous update request (any transactions returned via this request will be flagged as updated and, subsequently, not be returned in future requests).</p> 
+					</li>
+					<li>
+						<code>export_DetailedTransactions_Update_nonNET</code><br />
+						<p>The export_DetailedTransactions_Update_nonNET method provides a gateway through which CSI clients may request detailed transaction history for updating their backend MIS and/or CIS systems that has not been provided in a previous update request (any transactions returned via this request will be flagged as updated and, subsequently, not be returned in future requests)…. this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object. </p>
+					</li>
+					<li>
+						<code>export_FeeStructure_CreditCards</code><br />
+						<p>The export_FeeStructure_CreditCards method provides a gateway through which CSI clients may request the CSI credit card fee rates for local caching… this method is provided for those developers who do not wish to use the calculatedFee method during real-time calls. </p>
+					</li>
+					<li>
+						<code>processCredit</code><br />
+						<p>The processCredit method provides a gateway through which CSI clients may process credits for erroneously processed electronic check and credit card transactions.</p> 
+					</li>
+					<li>
+						<code>processCredit_nonNET</code><br />
+						<p>The processCredit_nonNET method provides a gateway through which CSI clients may process credits for erroneously processed electronic check and credit card transactions… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object. </p>
+					</li>
+					<li>
+						<code>processRecurringTransaction_ByToken</code><br />
+						<p>The processRecurringTransaction_ByToken method provides a gateway through which CSI clients may process electronic credit card transactions utilizing a previously established credit card token value in place of actual credit card information. </p>
+					</li>
+					<li>
+						<code>processTransaction</code><br />
+						<p>The processTransaction method provides a gateway through which CSI clients may process electronic check and credit card transactions.</p>
+					</li>
+					<li>
+						<code>processTransaction_nonNET</code><br />
+						<p>The processTransaction_nonNET method provides a gateway through which CSI clients may process electronic check and credit card transactions… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object. </p>
+					</li>
+					<li>
+						<code>processTransaction_nonNET_XMLObjectResponse</code><br />
+						<p>The processTransaction_nonNET_XMLObjectResponse method provides a gateway through which CSI clients may process electronic check and credit card transactions… this method is provided for those developers who are not using .NET and/or who wish to pass in an XML argument as a string, but, wish to have the response return as an System.xml.XMLDocument object.</p> 
+					</li>
+					<li>
+						<code>recurringTransaction_TokenCreation</code><br />
+						<p>The recurringTransaction_TokenCreation method provides a gateway through which CSI clients may create a tokenized credit card record to be used for processing recurring credit card transactions. </p>
+					</li>
+					<li>
+						<code>test_nonNET</code><br />
+						<p>The test_nonNET method accepts a simple string of less than 32 characters (any extra characters will simply be truncated) as an argument and returns the same string in reverse order… the method is provided for developers to utilize in order to quickly develop a simple proof of concept demonstrating SOAP connectivity and interaction with the CSI eCollections Portal.</p> 
+					</li>
+					<li>
+						<code>verifyPaymentID</code><br /> 
+						<p>The verifyPaymentID method provides a gateway through which CSI clients may verify locally (CSI) persisted payment ids. For this method to be effective the client must have established a method by which those payment ids are communicated to CSI for local persistence. </p>
+					</li>
+					<li>
+						<code>verifyPaymentID_nonNET</code><br />
+						<p>The verifyPaymentID method provides a gateway through which CSI clients may verify locally (CSI) persisted payment ids. For this method to be effective the client must have established a method by which those payment ids are communicated to CSI for local persistence…. this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.</p> 
+					</li>
+					<li>
+						<code>verifyTransaction</code><br />
+						<p>The verifyTransaction method provides a gateway through which CSI clients may verify that a transaction request processed successfully. </p>
+					</li>
+					<li>
+						<code>verifyTransaction_nonNET</code><br />
+						<p>The verifyTransaction_nonNET method provides a gateway through which CSI clients may verify that a transaction request processed successfully… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.</p> 
+					</li>
+					<li>
+						<code>VT_Transaction_GET</code><br />
+						<p>The VT_Transaction_GET method allows CSI clients to securely retrieve transactional data that is the result of a previous virtual terminal transaction request. </p>
+					</li>
+					<li>
+						<code>VT_Transaction_GET_Manatron</code><br />
+						<p>The VT_Transaction_GET_Mantron method allows CSI clients utilizing the Manatron MVP Tax Manager application to securely retrieve transactional data that is the result of a previous virtual terminal transaction request. </p>
+					</li>
+					<li>
+						<code>VT_Transaction_GET_Manatron_nonNET</code><br />
+						<p>The VT_Transaction_GET_Mantron_nonNET method allows CSI clients utilizing the Manatron MVP Tax Manager application to securely retrieve transactional data that is the result of a previous virtual terminal transaction request… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.</p>
+					</li>
+					<li>
+						<code>VT_Transaction_POST</code><br />
+						<p>The VT_Transaction_POST method allows CSI clients to securely post transactional data that is to be used in a subsequent virtual terminal transaction request. </p>
+					</li>
+					<li>
+						<code>VT_Transaction_POST_Manatron</code><br />
+						<p>The VT_Transaction_POST_Manatron method allows CSI clients utilizing the Manatron MVP Tax Manager application to securely post transactional data that is to be used in a subsequent virtual terminal transaction request. </p>
+					</li>
+					<li>
+						<code>VT_Transaction_POST_Manatron_nonNET</code><br />
+						<p>The VT_Transaction_POST_Manatron_nonNET method allows CSI clients utilizing the Manatron MVP Tax Manager application to securely post transactional data that is to be used in a subsequent virtual terminal transaction request… this method is provided for those developers who are not using .NET and/or who are not familiar with the System.xml.XMLDocument object.</p>
+					</li>
+				</section>
+			</article>
+			<article id="response-codes">
+				<h1><a name="response-codes">Appendix B - Response Codes</a></h1>
+				<section>
+					<table class="table striped table-bordered table-hover">
+						<tr class="info">
+							<td>Response Code</td>
+							<td>Meaning</td>
+						</tr>
+						<tbody>
+							<tr>
+								<td>
+									Y######Y
+								</td>
+								<td>The request was successfully processed</td>
+							</tr>
+							<tr>
+								<td>
+									YTESTEDY
+								</td>
+								<td>The test was successful</td>
+							</tr>
+							<tr>
+								<td>
+									N411111N : No Response From Gateway
+								</td>
+								<td>The status of the transaction is unknown.  Customer Service should be contacted to ensure proper management.</td>
+							</tr>
+							<tr>
+								<td>
+									N511111N : “DeclineMessage”
+								</td>
+								<td>The transaction was declined.  A description is provided in the “DeclineMessage”</td>
+							</tr>
+							<tr>
+								<td>
+									N211111N : Missing Data Element
+								</td>
+								<td>The CLIENTKEY element (a required data element) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>
+									N211112N : Missing Data Element
+								</td>
+								<td>The PAYMENTMETHOD element (a required data element) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211113N : Missing Data Element
+								</td>
+								<td>The CARDTYPE element (a required data element for Credit Card payments) was not provided in the XML submission.  </td>
+							</tr>
+							<tr>
+								<td>
+									N211114N : Missing Data Element
+								</td>
+								<td>The COLLECTIONMODE element (a required data element) was not provided in the XML submission.  </td>
+							</tr>
+							<tr>
+								<td>
+									N211115N : Missing Data Element
+								</td>
+								<td>The AMOUNT element (a required data element) was not provided in the XML submission.  </td>
+							</tr>
+							<tr>
+								<td>
+									N211116N : Missing Data Element
+								</td>
+								<td>The LINEITEM element (a required data element) was not provided in the XML submission (at least one must be present in a transaction)</td>
+							</tr>
+							<tr>
+								<td>
+									N211117N : Missing Data Element
+								</td>
+								<td>The CUSTOMERPAYMENTTYPEID element (a required data element) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211118N : Missing Data Element
+								</td>
+								<td>The ITEMAMOUNT element (a required data element) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211119N : Missing Data Element
+								</td>
+								<td>The TRANSACTIONID element (a required data element) was not provided in the XML submission.  </td>
+							</tr>
+							<tr>
+								<td>
+									N211120N : Missing Data Element
+								</td>
+								<td>The AUTHFORCE element (a required data element for credit card transactions) was not provided in the XML submission. </td>
+							</tr>
+							<tr>
+								<td> 
+									N211121N : Missing Data Element
+								</td>
+								<td>The PRC element (a required data element for credit card ‘force’ transactions) was not provided in the XML submission. </td>
+							</tr>
+							<tr>
+								<td> 
+									N211122N : Missing Data Element
+								</td>
+								<td>The FEEAMOUNT element (a required data element) was not provided in the XML submission.  </td>
+							</tr>
+							<tr>
+								<td>
+									N211123N : Missing Data Element
+								</td>
+								<td>The NAME element (a required data element) was not provided in the XML submission.  </td>
+							</tr>
+							<tr>
+								<td>
+									N211124N : Missing Data Element
+								</td>
+								<td>The ADDRESS element (a required data element for AVS fraud protection or general Billing Information persistence) was not provided in the XML submission.  </td>
+							</tr>
+							<tr>
+								<td>
+									N211125N : Missing Data Element
+								</td>
+								<td>The ZIP element (a required data element for AVS fraud protection or general Billing Information persistence) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>   
+									N211126N : Missing Data Element
+								</td>
+								<td>The CVV2 element (a required data element for credit card transactions for specified collectionmodes) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211127N : Missing Data Element
+								</td>
+								<td>The CCNUMBER element (a required data element for credit card transactions) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211128N : Missing Data Element
+								</td>
+								<td>The EXPDATE element (a required data element for credit card transactions) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211129N : Missing Data Element
+								</td>
+								<td>The PAYMENTID element (a required data element) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211130N : Missing Data Element
+								</td>
+								<td>The CHECKTYPE element (a required data element for eCheck transactions) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211131N : Missing Data Element
+								</td>
+								<td>The CHECKNUMBER element (a required data element for eCheck transactions for specified collectionmodes) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211132N : Missing Data Element
+								</td>
+								<td>The ROUTINGNUMBER element (a required data element for eCheck transactions) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211133N : Missing Data Element
+								</td>
+								<td>The ACCOUNTNUMBER element (a required data element for eCheck transactions) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211134N : Missing Data Element
+								</td>
+								<td>The PAYMENTID_SECONDARY element (defined as required by client business rules) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211135N : Missing Data Element
+								</td>
+								<td>The CITY element (a required data element for AVS fraud protection or general Billing Information persistence) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211136N : Missing Data Element
+								</td>
+								<td>The STATE element (a required data element for AVS fraud protection or general Billing Information persistence) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211137N : Missing Data Element
+								</td>
+								<td>The COUNTRY element (a required data element for AVS fraud protection or general Billing Information persistence) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211138N : Missing Data Element
+								</td>
+								<td>The SHIPPINGNAME element (a required data element for shipping information persistence) was not provided in the XML submission.  </td>
+							</tr>
+							<tr>
+								<td>
+									N211139N : Missing Data Element
+								</td>
+								<td>The SHIPPINGPHONE element (a required data element for shipping information persistence) was not provided in the XML submission. </td>
+							</tr>
+							<tr>
+								<td> 
+									N211140N : Missing Data Element
+								</td>
+								<td>The SHIPPINGADDRESS element (a required data element for shipping information persistence) was not provided in the XML submission.  </td>
+							</tr>
+							<tr>
+								<td>
+									N211141N : Missing Data Element
+								</td>
+								<td>The SHIPPINGCITY element (a required data element for shipping information persistence) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211142N : Missing Data Element
+								</td>
+								<td>The SHIPPINGSTATE element (a required data element for shipping information persistence) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211143N : Missing Data Element
+								</td>
+								<td>The SHIPPINGZIP element (a required data element for shipping information persistence) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211144N : Missing Data Element
+								</td>
+								<td>The SHIPPINGCOUNTRY element (a required data element for shipping information persistence) was not provided in the XML submission. </td>
+							</tr>
+							<tr>
+								<td> 
+									N211145N : Missing Data Element
+								</td>
+								<td>The ACCOUNTTYPE element (a required data element for eCheck transactions) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211146N : Missing Data Element
+								</td>
+								<td>The CHECKIMAGENAME element (a required data element for scanned eCheck transactions) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211147N : Missing Data Element
+								</td>
+								<td>The IAT element (a required data element for eCheck transactions) was not provided in the XML submission</td>
+							</tr>
+							<tr>
+								<td>
+									N211148N : Missing Data Element
+								</td>
+								<td>The PRC element (a required data element) was not provided in the XML submission. </td>
+							</tr>
+							<tr>
+								<td> 
+									N211149N : Missing Data Element
+								</td>
+								<td>The STARTDATE element (a required data element) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211150N : Missing Data Element
+								</td>
+								<td>The ENDDATE element (a required data element) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211151N : Missing Data Element
+								</td>
+								<td>The TOKENID element (a required data element) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N211152N : Missing Data Element
+								</td>
+								<td>The PHONE element (a required data element) was not provided in the XML submission.</td>
+							</tr>
+							<tr>
+								<td>  
+									N311111N : Invalid Data
+								</td>
+								<td>The CLIENTKEY value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311112N : Invalid Data
+								</td>
+								<td>The PAYMENTMETHOD provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311113N : Invalid Data
+								</td>
+								<td>The CARDTYPE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311114N : Invalid Data
+								</td>
+								<td>The COLLECTIONMODE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311115N : Invalid Data
+								</td>
+								<td>The AMOUNT value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311116N : Invalid Data
+								</td>
+								<td>The number of LINEITEM elements (a required complex data element) was invalid</td>
+							</tr>
+							<tr>
+								<td>
+									N311117N : Invalid Data
+								</td>
+								<td>The CUSTOMERPAYMENTTYPEID value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311118N : Invalid Data
+								</td>
+								<td>The ITEMAMOUNT value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311119N : Invalid Data
+								</td>
+								<td>The sum of the ITEMAMOUNT element values does not equal the overall AMOUNT element value</td>
+							</tr>
+							<tr>
+								<td>
+									N311120N : Invalid Data
+								</td>
+								<td>The TRANSACTIONID value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311121N : Invalid Data
+								</td>
+								<td>The AUTHFORCE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311122N : Invalid Data
+								</td>
+								<td>The PRC value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311123N : Invalid Data
+								</td>
+								<td>The FEEAMOUNT value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311124N : Invalid Data
+								</td>
+								<td>The NAME value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311125N : Invalid Data
+								</td>
+								<td>The ADDRESS value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311126N : Invalid Data
+								</td>
+								<td>The CITY value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311127N : Invalid Data
+								</td>
+								<td>The STATE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311128N : Invalid Data
+								</td>
+								<td>The ZIP value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311129N : Invalid Data
+								</td>
+								<td>The CVV2 value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311130N : Invalid Data
+								</td>
+								<td>The CCNUMBER value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311131N : Invalid Data
+								</td>
+								<td>The EXPDATE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311132N : Invalid Data
+								</td>
+								<td>The NOTES value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311133N : Invalid Data
+								</td>
+								<td>The CSIORGANIZATIONUNITID value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311134N : Invalid Data
+								</td>
+								<td>The PAYMENTID value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311135N : Invalid Data
+								</td>
+								<td>The EMAIL value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311136N : Invalid Data
+								</td>
+								<td>The PHONE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311137N : Invalid Data
+								</td>
+								<td>The BANKNAME value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311138N : Invalid Data
+								</td>
+								<td>The CHECKTYPE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311139N : Invalid Data
+								</td>
+								<td>The CHECKNUMBER value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311140N : Invalid Data
+								</td>
+								<td>The ROUTINGNUMBER value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311141N : Invalid Data
+								</td>
+								<td>The ACCOUNTNUMBER value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311142N : Invalid Data
+								</td>
+								<td>The EFFECTIVEDATE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311143N : Invalid Data
+								</td>
+								<td>The PAYERID value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311144N : Invalid Data
+								</td>
+								<td>The USERID value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311145N : Invalid Data
+								</td>
+								<td>The PRC value provided in the cc ‘force’ XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311146N : Invalid Data
+								</td>
+								<td>The AMOUNT value provided in the cc ‘force’ XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311147N : Invalid Data
+								</td>
+								<td>The PAYMENTID_SECONDARY value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311148N : Invalid Data
+								</td>
+								<td>The ADDRESSTWO value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311149N : Invalid Data
+								</td>
+								<td>The COUNTRY value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311150N : Invalid Data
+								</td>
+								<td>The SHIPPINGNAME value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311151N : Invalid Data
+								</td>
+								<td>The SHIPPINGPHONE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311152N : Invalid Data
+								</td>
+								<td>The SHIPPINGEMAIL value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311153N : Invalid Data
+								</td>
+								<td>The SHIPPINGADDRESS value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311154N : Invalid Data
+								</td>
+								<td>The SHIPPINGADDRESSTWO value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311155N : Invalid Data
+								</td>
+								<td>The SHIPPINGCITY value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311156N : Invalid Data
+								</td>
+								<td>The SHIPPINGSTATE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311157N : Invalid Data
+								</td>
+								<td>The SHIPPINGZIP value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311158N : Invalid Data
+								</td>
+								<td>The SHIPPINGCOUNTRY value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311159N : Invalid Data
+								</td>
+								<td>The ACCOUNTTYPE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311160N : Invalid Data
+								</td>
+								<td>The CHECKIMAGENAME value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311161N : Invalid Data
+								</td>
+								<td>The COLLECTIONMODE value provided in the XML submit is not valid for the PAYMENTMETHOD specified</td>
+							</tr>
+							<tr>
+								<td>
+									N311162N : Invalid Data
+								</td>
+								<td>The COUNTY value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311163N : Invalid Data
+								</td>
+								<td>The ALLOWDUPLICATE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311164N : Invalid Data
+								</td>
+								<td>The IAT value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311165N : Invalid Data
+								</td>
+								<td>Credit Card payments are not allowed</td>
+							</tr>
+							<tr>
+								<td>
+									N311166N : Invalid Data
+								</td>
+								<td>Credit Card payments are not allowed for the specified collection mode</td>
+							</tr>
+							<tr>
+								<td>
+									N311167N : Invalid Data
+								</td>
+								<td>The Credit Card type specified is not allowed for the specified collection mode</td>
+							</tr>
+							<tr>
+								<td>
+									N311168N : Invalid Data
+								</td>
+								<td>Debit Card payments are not allowed</td>
+							</tr>
+							<tr>
+								<td>
+									N311169N : Invalid Data
+								</td>
+								<td>Debit Card payments are not allowed for the specified collection mode</td>
+							</tr>
+							<tr>
+								<td>
+									N311170N : Invalid Data
+								</td>
+								<td>Check payments are not allowed</td>
+							</tr>
+							<tr>
+								<td>
+									N311171N : Invalid Data
+								</td>
+								<td>Check payments are not allowed for the specified collection mode</td>
+							</tr>
+							<tr>
+								<td>
+									N311172N : Invalid Data
+								</td>
+								<td>The INTERNALCREDIT value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311173N : Invalid Data
+								</td>
+								<td>The CHARGEBACK value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311174N : Invalid Data
+								</td>
+								<td>The STARTDATE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311175N : Invalid Data
+								</td>
+								<td>The ENDDATE value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N311176N : Invalid Data
+								</td>
+								<td>The PRC value provided in the XML submit represents a transaction that is currently in  process (ACH Batch)</td>
+							</tr>
+							<tr>
+								<td>
+									N311177N : Invalid Data
+								</td>
+								<td>The PRC value provided in the XML submit does not represent an approved transaction in the CSI system</td>
+							</tr>
+							<tr>
+								<td>
+									N311178N : Invalid Data
+								</td>
+								<td>The PRC value provided in the XML submit represents a transaction that has a return (ACH return) that has yet to process</td>
+							</tr>
+							<tr>
+								<td>
+									N311179N : Invalid Data
+								</td>
+								<td>The PRC value provided in the XML submit has already been fully credited </td>
+							</tr>
+							<tr>
+								<td>
+									N311180N : Invalid Data
+								</td>
+								<td>The PRC value provided in the XML submit has a credit pending </td>
+							</tr>
+							<tr>
+								<td>
+									N311181N : Invalid Data
+								</td>
+								<td>The PRC value provided in the XML submit has been charged back (ACH return,etc) </td>
+							</tr>
+							<tr>
+								<td>
+									N311182N : Invalid Data
+								</td>
+								<td>The AMOUNT value provided in the XML submit is greater than the amount available for credit</td>
+							</tr>
+							<tr>
+								<td>
+									N311183N : Invalid Data
+								</td>
+								<td>The AMOUNT value provided in the XML submit does not equal the amount of the original transaction.  For transactions representing multiple payment items, this value must be the same as the original transaction</td>
+							</tr>
+							<tr>
+								<td>
+									N311184N : Invalid Data
+								</td>
+								<td>The TOKENID value provided in the XML submit was not successfully validated</td>
+							</tr>
+							<tr>
+								<td>
+									N611111N : Invalid Organization Unit ID
+								</td>
+								<td>The Organization Unit ID provided does not exist in the CSI system</td>
+							</tr>
+							<tr>
+								<td>
+									N611112N : Invalid Payment Type ID
+								</td>
+								<td>The payment type id provided does not exist in the CSI system</td>
+							</tr>
+							<tr>
+								<td>
+									N611113N : Invalid Payer ID
+								</td>
+								<td>The payer id provided does not exist in the CSI system</td>
+							</tr>
+							<tr>
+								<td>
+									N611114N : Invalid User ID
+								</td>
+								<td>The user id provided does not exist in the CSI system</td>
+							</tr>
+							<tr>
+								<td>
+									N611115N : Invalid Payment Type ID
+								</td>
+								<td>The payment type id provided is currently set to in-active (cannot accept payments of this type) in the CSI system</td>
+							</tr>
+							<tr>
+								<td>
+									N711111N : Duplicate Payment
+								</td>
+								<td>A successful payment has been processed for the payment id provided within the specified duplicate prevention time constraint</td>
+							</tr>
+							<tr>
+								<td>
+									N811111N : Excessive ACH Returns
+								</td>
+								<td>For an ach item, too many returns have occurred in the past 12 months for a particular routing number \ account number</td>
+							</tr>
+							<tr>
+								<td>
+									N881111N : NOC Violation
+								</td>
+								<td>For an ach item, there has been a NOC within the past 12 months for a particular routing number \ account number</td>
+							</tr>
+							<tr>
+								<td>
+									N911111N : XML Load Error
+								</td>
+								<td>The XML submit could not recognized as valid XML and, subsequently, could not be successfully loaded</td>
+							</tr>
+							<tr>
+								<td>
+									N9#####N : General Error
+								</td>
+								<td>A general error occurred</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+			</article>
+			<article id="changes">
+				<h1><a name="changes">Appendix C - Changes</a></h1>
+				<section>
+					<table class="table striped table-bordered table-hover">'
+						<thead>
+							<tr>
+								<td colspan="3">Change Management Logs</td>
+							</tr>
+						</thead>
+						<tr class="info">
+							<td>Date</td>
+							<td>Description</td>
+						</tr>
+						<tbody>
+							<tr>
+								<td>6/14/2012</td>
+								<td>Base-lined.</td>
+							</tr>
+							<tr>
+								<td>6/15/2012</td>
+								<td>Added ‘values’ explanation for ‘State’ and ‘Country’ xml values stating that these values should be the full-name as opposed to abbreviations.  If abbreviations are used, the drop down list boxes will not properly ‘auto-select’… they will set to selected index = 0.</td>
+							</tr>
+							<tr>
+								<td>7/11/2012</td>
+								<td>Added the UserField1 node to the Manatron VT POST XML submission specification.</td>
+							</tr>
+							<tr>
+								<td>7/31/2012</td>
+								<td>Updated section 3.3 to add information concerning the querystring for URLSILENTPOST value and/or a URLRETURNPOST value.</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+			</article>
+		</div>
+		</div>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="scripts/js/my_api.js"></script>
+	<script type="text/javascript" src="scripts/prettify.js"></script>
+	<script type="text/javascript" src="scripts/lang-vb.js"></script>
+	<script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+	<script type="text/javascript" src="scripts/ZeroClipboard.min.js"></script>
+	<script>
+		ZeroClipboard.setMoviePath('http://collectorsolutions.com/api/scripts/ZeroClipboard.swf');
+		var clip = new ZeroClipboard.Client();
+		clip.setText('');
+		clip.setHandCursor(true);
+		
+		clip.addEventListener('onMouseDown', function(client) {
+			console.log("test");
+			clip.setText( $("#introCodeContent > div.active > pre").text() );
+		});
+		
+		clip.glue('copySampleCode');
+	</script>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-17097674-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+</body>
+</html>

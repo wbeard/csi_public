@@ -1,0 +1,23 @@
+<html>
+<body>
+<p id="returnplace"></p>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+
+	$.ajax({
+		type: "POST",
+		url: "https://secure.collectorsolutions.com/CSI_eCollections_Portal/ProcessingGateway.asmx/calculatefee_nonNET",
+		data: {"strXML_Fee": "xmlstringsenttoyou"},
+        dataType: "jsonp",
+		jsonp: false,
+		success: function(data) {
+			console.log(data);
+		},
+		error: function() {
+			$("#returnplace").html("Nope");
+		}
+	});
+
+</script>
+</body>
+</html>

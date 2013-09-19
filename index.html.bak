@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+<head>
+	<link rel="shortcut icon" href="img/favico.png">
+	<link rel="icon" type="image/png" href="img/favico.png">
+	<meta http-equiv="cache-control" content="no-cache">
+	<title>CollectorSolutions, Inc. - Tax Collector, Utility & Municipality Payment Processor</title>
+	<link href="styles/normalize.css" type="text/css" rel="stylesheet" />
+	<link href='http://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+	<link href="styles/styles.css" type="text/css" rel="stylesheet" />
+	<link rel='stylesheet' media='screen and (max-width: 480px), screen and (max-device-width: 480px)' href='styles/small_styles.css' />
+	<meta name="viewport" content="width=device-width">
+	<!--[if lte IE 9]>
+		<script src="scripts/js/lib/html5shiv.js"></script>
+		<script src="scripts/js/styleTransitionFallback.js" defer></script>
+	<![endif]-->
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB9XKZuWBB3nTGBNs8wHgbQYFEHMEIeaVs&sensor=true"></script>
+	<script>
+	function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(30.408265, -87.215073),
+          zoom: 15,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+		var image = 'img/moneyman_googlemaps.png';
+		var marker = new google.maps.Marker({
+			icon: image,
+			position: new google.maps.LatLng(30.408265, -87.215073),
+			map: map,
+			title: "CollectorSolutions, Inc."
+		});
+      }
+    </script>
+</head>
+<body onload="initialize()">
+	<div id="container">
+		<header>
+		<a id="homeLink" href="index.html"><img src="img/csi_header_logo_alt.png" /></a>
+		<div id="quickContact">
+			<h2>Sales: 877-813-0199</h2>
+			<h3>Support: 866-756-6041</h2>
+		</div>
+		<nav class="textLinks">
+			<a class="active" href="index.html">Home</a>
+			<a href="about.html">About CSI</a>
+			<a href="solutions.html">Solutions</a>
+			<a href="pricing.html">Pricing</a>
+			<a href="partners.html">Partners</a>
+			<a href="support.html">Support</a>
+			<a href="contactus.html">Contact Us</a>
+		</nav>
+		<nav class="iconLinks">
+			<a class="active" href="index.html"><img src="img/menuicons/home.png" alt="Home" /></a>
+			<a href="about.html"><img src="img/menuicons/about.png" alt="About" /></a>
+			<a href="solutions.html"><img src="img/menuicons/solutions.png" alt="Solutions" /></a>
+			<a href="pricing.html"><img src="img/menuicons/pricing.png" alt="Pricing" /></a>
+			<a href="partners.html"><img src="img/menuicons/partners.png" alt="Partners" /></a>
+			<a href="support.html"><img src="img/menuicons/support.png" alt="Support" /></a>
+			<a href="contactus.html"><img src="img/menuicons/contact.png" alt="Contact" /></a>
+		</nav>
+		<div id="headerWatermark"></div>
+		</header>
+		<!--<div id="sliderContainer">
+			<div id="sliderContainerControlWrapper">
+				<h1>Payment Channels</h1>
+				<div id="tooltipHighlighter"></div>
+				<a href="#" title="Web Portal" rel="tooltip"><img src="img/slideIcons/globe.png" /></a>
+				<a href="#" title="IVR" rel="tooltip"><img src="img/slideIcons/ivr.png" /></a>
+				<a href="#" title="Kiosk" rel="tooltip"><img src="img/slideIcons/kiosk.png" /></a>
+				<a href="#" title="Phone" rel="tooltip"><img src="img/slideIcons/phone.png" /></a>
+				<a href="#" title="Point of Sale"  rel="tooltip"><img src="img/slideIcons/pos.png" /></a>
+				<a href="#" title="Recurring"  rel="tooltip"><img src="img/slideIcons/refresh.png" /></a>
+			</div>
+			<div id="sliderContainerCardControlWrapper">
+				<h1>Payment Types</h1>
+				<a href="#" title="Visa" rel="tooltip"><img src="img/cardIcons/visa.png" /></a>
+				<a href="#" title="Amex" rel="tooltip"><img src="img/cardIcons/amex.png" /></a>
+				<a href="#" title="Mastercard" rel="tooltip"><img src="img/cardIcons/mc.png" /></a>
+				<a href="#" title="Discover" rel="tooltip"><img src="img/cardIcons/disc.png" /></a>
+				<a href="#" title="eCheck"  rel="tooltip"><img src="img/cardIcons/eCheck.png" /></a>
+			</div>
+		</div>-->
+		<div id="sliderContainer">
+			<div class="sliderContainerWordWrapper">
+				<h1>"...<b>CSI</b > specializes in the processing, management and reconciliation of check and credit card payments <b>executed via web technologies</b>."</h1>
+			</div>		
+		</div>
+		<!--<div id="panelContainer">-->
+		<div id="homeContainer">
+			<div id="" class="panel">
+			<h1>About CSI</h1>
+			<p>CSI is an ePayment company specializing in the processing, management and reconciliation of eCheck and Credit Card transactions utilizing the power, flexibility, and scope of the Internet.</p>
+			<p>CSI was founded in November of 1999. With a majority of the company being held by core personnel, CSI is both guided and driven to perform above industry standards by the innate principle of 'pride of ownership'.</p>
+			<p>Our client-base consists of government agencies, large corporations, and municipalities/utilities whose desire is not only to provide their customers with the convenience of electronic payments, but, to benefit from both the cost savings and potential revenue increases of such a solution, as well.</p>
+			<p>In 2011, CSI processed more than 2.5 billion dollars in payments for our clients.</p>
+			<p>CSI's primary goal is to provide our clients with an integrated solution that satisfies the diverse demands of internet-enabled financial organizations while empowering them with the ability to bridge their enterprise.</p>
+			</div>
+			<!--<div id="whatWeDoPanel" class="panel2">
+			<h1>Simple, low cost, secure <br /><b>ePayment solutions</b></h1>
+			</div>-->
+			<div id="news" class="panel">
+			<h1>CSI Happenings</h1>
+			<div class="events">
+			<h3>November - 2012</h3>
+			<p>CSI welcomes the Bexar County Texas Tax Assessor-Collector's Office as our newest Client Partner.  CSI has successfully implemented its Point of Sale, Web Portal and IVR solutions for Sylvia S. Romo Bexar County Tax Assessor-Collector and the citizens and tax payers of Bexar County.</p>
+			<h3>November - 2012</h3>
+			<p>CSI executes its first transaction as a Visa-Facilitator on the IP Commerce - Vantiv Platform </p>
+			<h3>November - 2012</h3>
+			<p>CSI incorporates the Magtek E2EE ‘Magensa’ service into its POS solution</p>
+			<h3>November - 2012</h3>
+			<p>CSI certifies with the IPCommerce Payment Platform</p>
+			<h3>October - 2012 </h3>
+			<p>CSI’s Hayley Jean achieves status as a ‘NACHA Certified AAP’. Congratulations on your achievement!</p>
+			
+			<h3>August - 2012 </h3>
+			<p>CSI announces the hire of Woody Lowe, to serve as CSI's Marketing and Sales Executive.</p>
+			
+			<h3>July - 2012</h3>
+			<p>Visa and MasterCard agree to settlement concerning surcharges.</p><a target="_blank" href="http://online.wsj.com/article/SB10001424052702303919504577525284273006706.html">[more]</a>
+			
+			<h3>June - 2012 </h3>
+			<p>CSI announces the hire of Pensacola CPA, Rick Carroll, to serve as CSI Corporate CPA.</p>
+			</div>
+			</div>
+		</div>
+		<!--</div>-->
+	</div>
+		<footer>
+			<div id="footerContainer">
+				<div id="navFooter">
+				<h2>Navigation</h2>
+				<hr style="float: left; margin-bottom: 5px;" width="200px">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="about.html">About CSI</a></li>
+						<li><a href="solutions.html">Solutions</a></li>
+						<li><a href="pricing.html">Pricing</a></li>
+						<li><a href="partners.html">Partners</a></li>
+						<li><a href="support.html">Support</a></li>
+						<li><a href="contactus.html">Contact Us</a></li>
+						<li><a href="https://secure.collectorsolutions.com/csi_managementconsole/console.asp">Console Login</a></li>
+					</ul>
+				</div>
+				<div>
+				<h2>Contact</h2><hr style="float: left; margin-bottom: 8px;" width="200px">
+					<ul>
+					<li><a href="mailto:help@collectorsolutions.com">Support</a></li>
+					<li><a href="mailto:sales@collectorsolutions.com">Sales</a></li>
+					</ul>
+					<p class="phone">
+					(877) 813-0199
+					</p>
+				</div>
+				<div id="contact_info">
+					<h2>Location</h2><hr style="float: left;" width="200px">
+					<div style="width:200px;height:300px;" id="map_canvas"></div>
+				</div>
+				<div id="about_info">
+					<h2>Affiliates</h2><hr style="float: left;" width="200px">
+					<img src="img/verisign_logo_small.png" />
+					<img src="img/pci_stamp_small.png" />
+				</div>
+			</div>
+	</footer>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="scripts/js/my.js"></script>
+	<script>
+	$(document).ready(function() {
+		$("body").on("touchstart", function(evt) {
+		
+			touchStart = evt.targetTouches[0];
+			
+		
+		});
+		
+		$("body").on("touchend", function(evt) {
+		
+			touchEnd = evt.targetTouches[0];
+			
+			if((touchEnd.pageX - touchStart.pageX) < -300) {
+				window.location("#");
+			}
+			else if((touchEnd.pageX - touchStart.pageX) > 300) {
+				window.location("about.html");
+			}
+			alert("stopped touched");
+		});
+	});
+	</script>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-17097674-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+</body>
+</html>
