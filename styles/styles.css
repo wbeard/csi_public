@@ -6,248 +6,107 @@
 body {
 
 	height: 100%;
-	
 	/*border-top: 3px solid #48a942; CSI Green*/
 	font-family: 'Open Sans', sans-serif;
 }
 
-#mmbg {
-	background: #fff url('../img/moneymanbg.png') no-repeat;
-	display: block;
-	width: 570px;
-	height: 1000px;
-	position: fixed;
-	z-index: -999;
-	bottom: 0;
-	left: -70px;
+.container {
+		width: 960px;
+		margin: 0 auto;
 }
 
-/***** Main container to center items and give a relative space to position from */
-#container {
-	
+.top-container {
+		margin-top: 75px;
 }
-
-	/* Quick phone number area */
-	#quickContact {
-
-		/* Position */
-		position: absolute;
-		top: 0px;
-		right:70px;
-		z-index: 1;
-		
-		/* Size */
-		width: auto;
-		height: 65px;
-		
-		/* Color */
-		background: transparent; /*CSI Green*/
-		
-		/* Misc Attributes */
-		border-bottom-right-radius: 3px;
-		border-bottom-left-radius: 3px;
-		
-		padding-left: 5px;
-		
-	}
-		#quickContact img {
-		
-			width: 25px;
-			height: 25px;
-			float: left;
-			margin-top: 5px;
-			margin: 3px;
-		
-		}
-	
-		#quickContact h2 {
-		
-			font-family: 'Arial', sans-serif;
-			font-weight: normal;
-			font-size: 1em;
-			color: #FFF;	
-			text-align: left;
-			margin-bottom: 2px;
-			margin-left: 16px;
-		
-		}
-		
-		#quickContact h3 {
-		
-			font-family: 'Arial', sans-serif;
-			font-weight: normal;
-			margin-top: 3px;
-			font-size: 1em;
-			text-align: left;
-			color: #d5e2ff;
-		
-		}
-	
-	#quickLogin {
-
-		/* Position */
-		position: absolute;
-		top: -3px;
-		right: 5px;
-		z-index: 3;
-		
-		/* Size */
-		width: auto;
-		padding: 15px;
-		
-		/* Color */
-		background: #2c6a28; /*CSI Green*/
-		
-		/* Misc Attributes */
-		border-radius: 5px;
-		
-	}
-	
-		#quickLogin a {
-		
-			color: #FFF;
-			font-size: 0.7em;
-			text-decoration: none;
-		
-		}
-		
-		#quickLogin a:hover {
-		
-			color: #c6eec3;
-			font-size: 0.7em;
-			text-decoration: none;
-		
-		}
-	
-		#quickLoginPanel {
-		
-			display: none;
-			position: absolute;
-			padding: 15px;
-			padding-top: 30px;
-			height: auto;
-			width: 350px;
-			right: 0px;
-			background: #48a942;
-			z-index: 2;
-			border-bottom-left-radius: 3px;
-		
-		}
-		
-		#quickLoginPanel input {
-		
-			width: 200px;
-			margin-bottom: 15px;		
-		}
-		
-		#quickLoginPanel button {
-		
-			width: 100px;
-			height: 30px;
-			float: right;
-			
-		
-		}
 
 	/* Top vertical container:
 								Has logo & menu  */
 
 	header {
 
-		background-color:#3e9141;
-		/* Position for child elements */
-		position: relative;
-		
+		background-color:#fff;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		box-shadow: 0 1px 1px 0px #ccc;
+		padding: 5px;
+		z-index: 1;
 	}
+	
 
-		/* Collector Solutions Logo in the top left */
-		header a#topLogo {
-
-			/* Position */
-			position: absolute;
-			
-			/* Misc Attributes */
-			border: 0px;
-
-		}
-		
 		#homeLink > img {
 			margin: 5px;
-			height: 100px;
+			height: 50px;
 		}
 
-		/* Navigation container */
-		header nav.textLinks {
+		.textLinksContainer {
+				height:50px;
+		}
 
-			/* Position */
+		.textLinks {
 			position: absolute;
-			bottom: 15px;
-			right: 50px;
-			
-			/* Size */
-			width: auto;
-			
-			z-index: 1;
-
+			bottom: 0;
+			right: 0;
 		}
 
 		/* Navigation Links */
-		header nav.textLinks a {
+		.textLinks .dropdown > a,  .textLinks > a {
 
 			/* Font */
-			color: #dedede;
+			color: #000;
 			font-family: Verdana;
 			font-family: 'Open Sans', sans-serif;
-			font-size: 1.3em;
+			font-size: 14px;
 			
 			/* Text Misc. */
 			text-decoration: none;
-			text-shadow: 1px 1px 0px #3d3d3d;
-			
+	
 			/* Spacing */
 			margin-right: 20px;
-			
 			/* Transitions */
-			transition-property: font-size;
+			transition-property: border-bottom;
 			transition-duration: 75ms;
 			transition-timing-function: ease-in;
-			-moz-transition-property: font-size;
+			-moz-transition-property: border-bottom;
 			-moz-transition-duration: 75ms;
 			-moz-transition-timing-function: ease-in;
-			-webkit-transition-property: font-size;
+			-webkit-transition-property: border-bottom;
 			-webkit-transition-duration: 75ms;
 			-webkit-transition-timing-function: ease-in;
-			-o-transition-property: font-size;
+			-o-transition-property: border-bottom;
 			-o-transition-duration: 75ms;
 			-o-transition-timing-function: ease-in;
-			-ms-transition-property: font-size;
+			-ms-transition-property: border-bottom;
 			-ms-transition-duration: 75ms;
 			-ms-transition-timing-function: ease-in;
+			border-bottom: 2px solid transparent;
 
 		}
+
+		[data-toggle="dropdown"]:after {
+		}
 		
-		header nav.textLinks a:hover {
+		header .textLinks a:hover {
 		
-			color: #000 !important;
-			font-size: 2em;
+			border-bottom-color: #3E9141;
 		
 		}
 		
 		
-		header nav.textLinks a.active {
+		header .textLinks a.active {
 				
-			color: #fff;
-			font-size: 2em;
-		
+			color: #3E9141;
+			border-bottom-color: #3E9141;
 		}
 		
-		header nav.iconLinks {
+		header .iconLinks {
 			display: none;
 		}
 		
 		#headerWatermark {
 		
-			background: transparent url("../img/csi_Header_Logo_Watermark_alt.png") no-repeat;
+			background: transparent url("../img/csi_Header_Logo_Watermark.png") no-repeat;
 			width: 308px;
 			height: 250px;
 			position: absolute;
@@ -360,16 +219,17 @@ body {
 		/* Positioning */
 		
 		/* Size */
-		width: 960px;
-		height: auto;
+		width: 100%;
+		height: 300px;
 		
 		/* Background */
-		background: transparent;
+		background: #555 url('../img/slider_bg_1.png') no-repeat center center;
 		
 		/* Border */
 		border: 0px;
-		margin: 0 auto;
 		margin-top: 45px;
+	
+		
 	}
 	
 	#sliderContainer blockquote {
@@ -392,6 +252,11 @@ body {
 	
 	.sliderContainerWordWrapper {
 	
+		width: 700px;
+		background-color: #555;
+		padding: 10px;
+		background-color: rgba(0,0,0,0.75);
+		border-radius: 3px;
 		/*View*/
 		display: none;
 		
@@ -535,17 +400,12 @@ body {
 		height: 280px;
 		margin-bottom: 30px;
 	}
-	
-		.sliderContainerWordWrapper h1 {
-		
-			font-family: 'Open Sans', sans-serif;
-			font-size: 2.5em;
-			color: #49aa43;
-			width: 930px;
-			margin: 0;
-			text-align: center;
-		
+
+		.sliderContainerWordWrapper h1, .sliderContainerWordWrapper p {
+			text-align: left;
+			color: #fff;
 		}
+
 		.posHeader > h1 {
 			font-family: 'Open Sans', sans-serif;
 			font-size: 2.3em;
@@ -663,13 +523,6 @@ body {
 		.posSecondary > h1 > span {
 			text-align: center;
 			display: block;
-		}
-		
-		.sliderContainerWordWrapper > h1  b {
-		
-			font-size: 1.5em;
-			color: #000;
-		
 		}
 	
 		.posHeader > h1 b {
@@ -789,7 +642,6 @@ body {
 	/* Secondary wrapper for slide controls */		
 	#sliderContainerControlWrapper {
 	
-		width: 960px;
 		position: relative;
 		margin: 30px auto;
 	
@@ -1460,7 +1312,6 @@ footer
 	margin: 10px;
 	padding: 0px;
 	background: white;
-	box-shadow: 0px 0px 5px #ccc;
 	float: left;
 	height: 500px;
 	font-size: 0.8em;
@@ -1565,9 +1416,6 @@ footer
 
 }
 
-#homeContainer .panel:hover h1 {
-	background: #f0fde4;
-}
 
 #homeContainer .short-panel {
 	height: 250px;
@@ -1578,13 +1426,8 @@ footer
 	text-align: center;
 	margin: 0;
 	padding: 0.67em 0;
-	background: #fff8f0;
-	border-bottom: 1px solid #f5e7d6;
 	font-family: 'Merriweather', serif;
-	
-	-webkit-transition: background 1s;
-	-moz-transition: background 1s;
-	-transition: background 1s;
+
 }
 
 .panel h1 > a {

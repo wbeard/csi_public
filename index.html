@@ -10,9 +10,13 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
 	
-	<link href="styles/grids.css" rel="stylesheet">
-	<link href="styles/media.css" rel="stylesheet">
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	
+	<link href="styles/libs/grids.css" rel="stylesheet">
+	<!--<link href="styles/libs/media.css" rel="stylesheet">-->
 	<link href="styles/styles.css" type="text/css" rel="stylesheet" />
+	<link href="fiat/components/modal.css" type="text/css" rel="stylesheet" />
+	<link href="fiat/components/buttons.css" type="text/css" rel="stylesheet" />
 	
 	<link rel='stylesheet' media='screen and (max-width: 480px), screen and (max-device-width: 480px)' href='styles/small_styles.css' />
 	<meta name="viewport" content="width=device-width">
@@ -41,40 +45,41 @@
     </script>
 </head>
 <body onload="initialize()">
-		<div id="mmbg">
+	<header>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4">
+						<a id="homeLink" href="index.html"><img src="img/csi_header_logo.png" /></a>
+					</div>
+					<div class="col-md-8 textLinksContainer">
+						<nav class="textLinks">
+							<span class="dropdown">
+								<a data-toggle="dropdown" class="active" href="#">Solutions</a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+									<li role="presentation" class="divider"></li>
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+								</ul>
+							</span>
+							<a href="pricing.html">Pricing</a>
+							<a href="partners.html">Partners</a>
+							<a href="support.html">Support</a>
+							<a href="contactus.html">Company</a>
+						</nav>
+					</div>
+				</div>
+			</div>
+	</header>
+	<div id="sliderContainer" class="top-container jumbotron">
+		<div class="sliderContainerWordWrapper container">
+				<h1>CSI</h1>
+				<p>Processing, management and reconciliation of check and credit card payments executed via web technologies</p>
+				<p><a id="learnMoreCTA" class="btn btn-success btn-lg pull-right">Learn more</a></p>
 		</div>
-	<div id="container">
-		
-		<header>
-		<a id="homeLink" href="index.html"><img src="img/csi_header_logo_alt.png" /></a>
-		<div id="quickContact">
-			<h2>Sales: 877-813-0199</h2>
-			<h3>Support: 866-756-6041</h2>
-		</div>
-		<nav class="textLinks">
-			<a class="active" href="index.html">Home</a>
-			<a href="about.html">About CSI</a>
-			<a href="solutions.html">Solutions</a>
-			<a href="pricing.html">Pricing</a>
-			<a href="partners.html">Partners</a>
-			<a href="support.html">Support</a>
-			<a href="contactus.html">Contact Us</a>
-		</nav>
-		<nav class="iconLinks">
-			<a class="active" href="index.html"><img src="img/menuicons/home.png" alt="Home" /></a>
-			<a href="about.html"><img src="img/menuicons/about.png" alt="About" /></a>
-			<a href="solutions.html"><img src="img/menuicons/solutions.png" alt="Solutions" /></a>
-			<a href="pricing.html"><img src="img/menuicons/pricing.png" alt="Pricing" /></a>
-			<a href="partners.html"><img src="img/menuicons/partners.png" alt="Partners" /></a>
-			<a href="support.html"><img src="img/menuicons/support.png" alt="Support" /></a>
-			<a href="contactus.html"><img src="img/menuicons/contact.png" alt="Contact" /></a>
-		</nav>
-		</header>
-		<div id="sliderContainer">
-			<div class="sliderContainerWordWrapper">
-				<h1>"...<b>CSI</b > specializes in the processing, management and reconciliation of check and credit card payments <b>executed via web technologies</b>."</h1>
-			</div>		
-		</div>
+	</div>
+		<div class="container">
 		<!--<div id="panelContainer">-->
 		<div id="homeContainer" class="line">
 			<div class="unit size1of2">
@@ -99,10 +104,10 @@
 				<div id="" class="panel slides">
 				<h1><a href="possolutions.html">Point of Sale Solution</a></h1>
 				<p class="navigate prev">
-					‹
+					ï¿½
 				</p>
 				<p class="navigate next">
-					›
+					ï¿½
 				</p>
 				<div class="slides-container">
 					<div class="slide">
@@ -142,7 +147,7 @@
 								<img src="http://placecage.com/c/50/50" alt="me" />
 							</a>
 							<div class="bd">
-								CSI welcomes the Gilchrist County Tax Collector’s Office as a Client Partner.  CSI is pleased to serve the residents of Gilchrist County, and Gilchrist County Tax Collector, Barbara Merritt.
+								CSI welcomes the Gilchrist County Tax Collectorï¿½s Office as a Client Partner.  CSI is pleased to serve the residents of Gilchrist County, and Gilchrist County Tax Collector, Barbara Merritt.
 							</div>
 						</div>
 						<div class="media attribution">
@@ -150,7 +155,7 @@
 								<img src="http://placekitten.com/50/50" alt="me" />
 							</a>
 							<div class="bd">
-								CSI welcomes the Gulf County Tax Collector’s Office as a Client Partner.  CSI looks forward to working with the Honorable Shirley Jenkins, and the Gulf County Tax Collector’s Office.
+								CSI welcomes the Gulf County Tax Collectorï¿½s Office as a Client Partner.  CSI looks forward to working with the Honorable Shirley Jenkins, and the Gulf County Tax Collectorï¿½s Office.
 							</div>
 						</div>						
 						<h3>February - 2013</h3>
@@ -193,7 +198,7 @@
 								<img src="http://fillmurray.com/50/50" alt="me" />
 							</a>
 							<div class="bd">
-								CSI incorporates the Magtek E2EE ‘Magensa’ service into its POS solution
+								CSI incorporates the Magtek E2EE ï¿½Magensaï¿½ service into its POS solution
 							</div>
 						</div>	
 						<div class="media attribution">
@@ -210,7 +215,7 @@
 								<img src="http://placekitten.com/50/50" alt="me" />
 							</a>
 							<div class="bd">
-								CSI’s Hayley Jean achieves status as a ‘NACHA Certified AAP’. Congratulations on your achievement!
+								CSIï¿½s Hayley Jean achieves status as a ï¿½NACHA Certified AAPï¿½. Congratulations on your achievement!
 							</div>
 						</div>	
 						<h3>August - 2012 </h3>
@@ -245,10 +250,10 @@
 				<div id="" class="panel slides short-panel">
 					<h1><a href="partners.html">Partners</a></h1>
 					<p class="navigate prev">
-						‹
+						ï¿½
 					</p>
 					<p class="navigate next">
-						›
+						ï¿½
 					</p>
 					<div class="slides-container">
 						<div class="slide">
@@ -320,7 +325,10 @@
 			</div>
 	</footer>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="scripts/js/my.js"></script>
+	<script src="fiat/js/dojoconfig.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>
 	<script>
 	$(document).ready(function() {
 				
@@ -382,6 +390,27 @@
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 
+	</script>
+	
+	<script>
+	require(["dojo/dom", "dojo/on", "c8/modal"],
+					function(dom, on, Modal) {
+							on(dom.byId("learnMoreCTA"), "click", function(evt) {
+									try {
+									var modal = new Modal({
+										type: "success",
+										transition: "pop-up",
+										body: "More about CSI",
+										button: "Awesome!",
+										buttonType: "success"
+									});
+									modal.fire();
+									} catch(ex) {
+											console.log(ex.message);
+									}
+							});
+					}
+				 );
 	</script>
 </body>
 </html>
