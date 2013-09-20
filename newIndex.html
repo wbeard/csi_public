@@ -18,7 +18,6 @@
 	<link href="fiat/components/modal.css" type="text/css" rel="stylesheet" />
 	<link href="fiat/components/buttons.css" type="text/css" rel="stylesheet" />
 	
-	<link rel='stylesheet' media='screen and (max-width: 480px), screen and (max-device-width: 480px)' href='styles/small_styles.css' />
 	<meta name="viewport" content="width=device-width">
 	<!--[if lte IE 9]>
 		<script src="scripts/js/lib/html5shiv.js"></script>
@@ -47,31 +46,44 @@
 <body onload="initialize()">
 	<header>
 			<div class="container">
-				<div class="row">
-					<div class="col-md-4">
-						<a id="homeLink" href="index.html"><img src="img/csiicon.png" />Collector Solutions</a>
-					</div>
-					<div class="col-md-8 textLinksContainer">
-						<nav class="textLinks">
-							<span class="dropdown">
-								<a data-toggle="dropdown" class="active" href="#">Solutions</a>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Point of Sale</a></li>
-									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-									<li role="presentation" class="divider"></li>
-									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Link</a></li>
-								</ul>
-							</span>
-							<a href="pricing.html">Pricing</a>
-							<a href="partners.html">Partners</a>
-							<a href="support.html">Support</a>
-							<a href="contactus.html">Company</a>
-							<a href="#"><span class="glyphicon glyphicon-earphone" style="font-size: 12px"></span> 866-756-6041</a>
-						</nav>
-					</div>
-				</div>
-			</div>
+	<nav id="mainNav" class="navbar navbar-default" role="navigation">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="homeLink" href="index.html"><img src="img/csiicon.png" /></a>
+		</div>
+	
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse navbar-ex1-collapse">
+			<ul class="nav navbar-nav textLinks navbar-right">
+				<!--<li class="active"><a href="#">Link</a></li>
+				<li><a href="#">Link</a></li>-->
+				<li class="dropdown">
+					<a data-toggle="dropdown" class="active" href="#">Solutions <b class="caret"></b></a>
+					<ul class="dropdown-menu navbar-right" role="menu" aria-labelledby="dropdownMenu1">
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Point of Sale</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+						<li role="presentation" class="divider"></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Link</a></li>
+					</ul>
+				</li>
+				<li><a href="pricing.html">Pricing</a></li>
+				<li><a href="partners.html">Partners</a></li>
+				<li><a href="support.html">Support</a></li>
+				<li><a href="devs.html">Developers</a></li>
+				<li><a href="contactus.html">Company</a></li>
+				<li><a href="devs.html">Blog</a></li>
+				<p class="navbar-text"><span class="glyphicon glyphicon-earphone" style="font-size: 12px"></span> 866-756-6041</p>
+			</ul>
+		</div>
+	</nav>
 	</header>
 	<div id="sliderContainer" class="top-container jumbotron">
 		<div class="sliderContainerWordWrapper container">

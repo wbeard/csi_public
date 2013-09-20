@@ -11,7 +11,7 @@ body {
 }
 
 .container {
-		width: 960px;
+		max-width: 960px;
 		margin: 0 auto;
 }
 
@@ -40,37 +40,31 @@ body {
 		padding: 5px;
 		z-index: 1;
 	}
+
+#mainNav {
+		background: #fff;
+		border: none;
+		box-shadow: none;
+}
+
+	header .navbar-brand {
+	padding: 0px;
+}
 	
 
 		#homeLink > img {
 			margin: 5px;
-			height: 50px;
+			height: 40px;
 		}
 
 		.textLinksContainer {
 				height:50px;
 		}
 
-		.textLinks {
-			position: absolute;
-			bottom: 0;
-			right: 0;
-		}
 
 		/* Navigation Links */
-		.textLinks .dropdown > a,  .textLinks > a {
+		.textLinks .dropdown > li > a,  .textLinks > li > a {
 
-			/* Font */
-			color: #000;
-			font-family: Verdana;
-			font-family: 'Open Sans', sans-serif;
-			font-size: 14px;
-			
-			/* Text Misc. */
-			text-decoration: none;
-	
-			/* Spacing */
-			margin-right: 20px;
 			/* Transitions */
 			transition-property: border-bottom;
 			transition-duration: 75ms;
@@ -89,9 +83,6 @@ body {
 			-ms-transition-timing-function: ease-in;
 			border-bottom: 2px solid transparent;
 
-		}
-
-		[data-toggle="dropdown"]:after {
 		}
 		
 		header .textLinks a:hover {
@@ -263,7 +254,7 @@ body {
 	
 	.sliderContainerWordWrapper {
 	
-		width: 700px;
+		max-width: 700px;
 		background-color: #555;
 		padding: 15px;
 		background-color: rgba(0,0,0,0.75);
