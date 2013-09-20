@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+	<link rel="shortcut icon" href="img/favico.png">
+	<link rel="icon" type="image/png" href="img/favico.png">
+	<meta http-equiv="cache-control" content="no-cache">
+	<title>CollectorSolutions, Inc. - Tax Collector, Utility & Municipality Payment Processor</title>
+	<link href="styles/normalize.css" type="text/css" rel="stylesheet" />
+	
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+	
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	
+	<link href="styles/libs/grids.css" rel="stylesheet">
+	<!--<link href="styles/libs/media.css" rel="stylesheet">-->
+	<link href="styles/styles.css" type="text/css" rel="stylesheet" />
+	<link href="fiat/components/modal.css" type="text/css" rel="stylesheet" />
+	<link href="fiat/components/buttons.css" type="text/css" rel="stylesheet" />
+	
+	<link rel='stylesheet' media='screen and (max-width: 480px), screen and (max-device-width: 480px)' href='styles/small_styles.css' />
+	<meta name="viewport" content="width=device-width">
+	<!--[if lte IE 9]>
+		<script src="scripts/js/lib/html5shiv.js"></script>
+		<script src="scripts/js/styleTransitionFallback.js" defer></script>
+	<![endif]-->
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB9XKZuWBB3nTGBNs8wHgbQYFEHMEIeaVs&sensor=true"></script>
+	<script>
+	function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(30.408265, -87.215073),
+          zoom: 14,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+		var image = 'img/moneyman_googlemaps.png';
+		var marker = new google.maps.Marker({
+			icon: image,
+			position: new google.maps.LatLng(30.408265, -87.215073),
+			map: map,
+			title: "CollectorSolutions, Inc."
+		});
+      }
+    </script>
+</head>
+<body onload="initialize()">
+	<header>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4">
+						<a id="homeLink" href="index.html"><img src="img/csiicon.png" />Collector Solutions</a>
+					</div>
+					<div class="col-md-8 textLinksContainer">
+						<nav class="textLinks">
+							<span class="dropdown">
+								<a data-toggle="dropdown" class="active" href="#">Solutions</a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Point of Sale</a></li>
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+									<li role="presentation" class="divider"></li>
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Link</a></li>
+								</ul>
+							</span>
+							<a href="pricing.html">Pricing</a>
+							<a href="partners.html">Partners</a>
+							<a href="support.html">Support</a>
+							<a href="contactus.html">Company</a>
+							<a href="#"><span class="glyphicon glyphicon-earphone" style="font-size: 12px"></span> 866-756-6041</a>
+						</nav>
+					</div>
+				</div>
+			</div>
+	</header>
+	<div id="sliderContainer" class="top-container jumbotron">
+		<div class="sliderContainerWordWrapper container">
+				<h1>Collector Solutions</h1>
+				<p>We modernize payments for tax collectors. Want to learn more?</p>
+				<p><a id="learnMoreCTA" class="btn btn-success btn-lg pull-right">Learn more</a></p>
+		</div>
+	</div>
+	<div class="content-container">
+	<!--<div id="panelContainer">-->
+	<!--</div>-->
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="scripts/js/my.js"></script>
+	<script src="fiat/js/dojoconfig.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-17097674-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+	
+	<script>
+	require(["dojo/dom", "dojo/on", "c8/modal"],
+					function(dom, on, Modal) {
+							on(dom.byId("learnMoreCTA"), "click", function(evt) {
+									try {
+									var modal = new Modal({
+										type: "success",
+										transition: "pop-up",
+										body: "More about CSI",
+										button: "Awesome!",
+										buttonType: "success"
+									});
+									modal.fire();
+									} catch(ex) {
+											console.log(ex.message);
+									}
+							});
+					}
+				 );
+	</script>
+</body>
+</html>
